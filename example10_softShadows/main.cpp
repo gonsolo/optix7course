@@ -16,13 +16,21 @@
 
 #include "SampleRenderer.h"
 
+#if NO_WINDOW
+#define STB_IMAGE_WRITE_IMPLEMENTATION
+#include "3rdParty/stb_image_write.h"
+#else
 // our helper library for window handling
 #include "glfWindow/GLFWindow.h"
 #include <GL/gl.h>
+#endif
+
 
 /*! \namespace osc - Optix Siggraph Course */
 namespace osc {
 
+#if NO_WINDOW
+#else
   struct SampleWindow : public GLFCameraWindow
   {
     SampleWindow(const std::string &title,
@@ -107,7 +115,7 @@ namespace osc {
     SampleRenderer        sample;
     std::vector<uint32_t> pixels;
   };
-  
+#endif  
   
   /*! main entry point to this example - initially optix, print hello
     world, then exit */
@@ -140,10 +148,23 @@ namespace osc {
       // camera knows how much to move for any given user interaction:
       const float worldScale = length(model->bounds.span());
 
+#if NO_WINDOW
+      SampleRenderer        sample(model,light);
+      sample.setCamera(camera);
+      const vec2i fbSize(1200,800);
+      std::vector<uint32_t> pixels;
+      sample.resize(fbSize);
+      pixels.resize(fbSize.x*fbSize.y);
+      sample.render();
+      sample.downloadPixels(pixels.data());
+      const std::string fileName = "example10_softShadows.png";
+      stbi_write_png(fileName.c_str(),fbSize.x,fbSize.y,4,
+                     pixels.data(),fbSize.x*sizeof(uint32_t));
+#else
       SampleWindow *window = new SampleWindow("Optix 7 Course Example",
                                               model,camera,light,worldScale);
       window->run();
-      
+#endif
     } catch (std::runtime_error& e) {
       std::cout << GDT_TERMINAL_RED << "FATAL ERROR: " << e.what()
                 << GDT_TERMINAL_DEFAULT << std::endl;

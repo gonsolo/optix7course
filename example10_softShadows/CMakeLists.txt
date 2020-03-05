@@ -41,3 +41,23 @@ target_link_libraries(ex10_softShadows
   glfw
   ${OPENGL_gl_LIBRARY}
   )
+
+
+add_executable(ex10_softShadows-noWindow
+  ${embedded_ptx_code}
+  optix7.h
+  CUDABuffer.h
+  SampleRenderer.h
+  SampleRenderer.cpp
+  Model.cpp
+  main.cpp
+  )
+
+target_link_libraries(ex10_softShadows-noWindow
+  gdt
+  # optix dependencies, for rendering
+  ${optix_LIBRARY}
+  ${CUDA_LIBRARIES}
+  ${CUDA_CUDA_LIBRARY}
+  )
+target_compile_definitions(ex10_softShadows-noWindow PUBLIC -DNO_WINDOW=1)
