@@ -49,14 +49,6 @@ OptixResult optixModuleCreateFromPTX(
         std::ofstream dummy("dummy.cpp");
         dummy << "int " << pipelineCompileOptions->pipelineLaunchParamsVariableName << ";" << std::endl;
         dummy.close();
-        std::system("clang++ -fPIC -c dummy.cpp");
-        std::system("clang++ -fPIC -xc++ -std=c++17 -I ../gonzo/ -I ../common/gdt -I ../gonzo/optix_device.h  -c devicePrograms.cu");
-        std::system("clang++ -shared -o dummy.so dummy.o devicePrograms.o");
-        void* handle = dlopen("./dummy.so", RTLD_LAZY);
-        if (!handle) {
-                std::cerr << "dlopen failed!" << std::endl;
-                exit(EXIT_FAILURE);
-        }
 
         return OPTIX_SUCCESS;
 }
@@ -68,7 +60,13 @@ OptixResult optixProgramGroupCreate(
         const OptixProgramGroupOptions *options,
         char *logString,
         size_t *logStringSize,
-        OptixProgramGroup *programGroups) { return OPTIX_SUCCESS; }
+        OptixProgramGroup *programGroups) {
+
+        if (programDescriptions->kind == OPTIX_PROGRAM_GROUP_KIND_RAYGEN) {
+                programGroups->functionName = programDescriptions->raygen.entryFunctionName;
+        }
+        return OPTIX_SUCCESS;
+}
 OptixResult optixPipelineSetStackSize(
         OptixPipeline  	pipeline,
 	unsigned int  	directCallableStackSizeFromTraversal,
@@ -95,7 +93,22 @@ OptixResult optixPipelineCreate(
 		unsigned int numProgramGroups,
 		char * logString,
 		size_t * logStringSize,
-		OptixPipeline * pipeline) { return OPTIX_SUCCESS; }
+		OptixPipeline * pipeline) {
+
+        std::system("clang++ -fPIC -c dummy.cpp");
+        std::system("clang++ -fPIC -xc++ -std=c++17 -I ../gonzo/ -I ../common/gdt -I ../gonzo/optix_device.h  -c devicePrograms.cu");
+        std::system("clang++ -shared -o dummy.so dummy.o devicePrograms.o");
+
+        void* handle = dlopen("./dummy.so", RTLD_LAZY);
+        if (!handle) {
+                std::cerr << "dlopen failed!" << std::endl;
+                exit(EXIT_FAILURE);
+        }
+        void* raygen = dlsym(handle, "__raygen__renderFrame");
+        std::cout << "gonzo raygen: " << raygen << std::endl;
+
+        return OPTIX_SUCCESS;
+}
 
 extern "C" {
         char embedded_ptx_code[256];

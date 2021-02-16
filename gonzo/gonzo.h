@@ -58,7 +58,9 @@ struct OptixModuleCompileOptions {
         OptixCompileOptimizationLevel 	optLevel;
         OptixCompileDebugLevel debugLevel;
 };
-struct OptixProgramGroup_t {};
+struct OptixProgramGroup_t {
+        const char* functionName;
+};
 typedef OptixProgramGroup_t OptixProgramGroup;
 struct OptixShaderBindingTable {
         CUdeviceptr raygenRecord;

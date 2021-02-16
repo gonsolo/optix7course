@@ -1,3 +1,8 @@
 devicePrograms.bc
 ex02_pipelineAndRayGen
 osc_example2.png
+tags
+dummy.so
+dummy.o
+dummy.cpp
+devicePrograms.o
