@@ -1,5 +1,9 @@
 #include "gonzo.h"
-
+#include "optix_device.h"
+#include "dlfcn.h"
+#include <cstdlib>
+#include <fstream>
+#include <iostream>
 
 void cudaStreamCreate(cudaStream_t* pStream) {}
 void cudaGetDeviceProperties(cudaDeviceProp* prop, int device) {}
@@ -40,7 +44,23 @@ OptixResult optixModuleCreateFromPTX(
         size_t PTXsize,
         char *logString,
         size_t *logStringSize,
-        OptixModule *module) { return OPTIX_SUCCESS; }
+        OptixModule *module) {
+        
+        std::ofstream dummy("dummy.cpp");
+        dummy << "int " << pipelineCompileOptions->pipelineLaunchParamsVariableName << ";" << std::endl;
+        dummy.close();
+        std::system("clang++ -fPIC -c dummy.cpp");
+        std::system("clang++ -fPIC -xc++ -std=c++17 -I ../gonzo/ -I ../common/gdt -I ../gonzo/optix_device.h  -c devicePrograms.cu");
+        std::system("clang++ -shared -o dummy.so dummy.o devicePrograms.o");
+        void* handle = dlopen("./dummy.so", RTLD_LAZY);
+        if (!handle) {
+                std::cerr << "dlopen failed!" << std::endl;
+                exit(EXIT_FAILURE);
+        }
+
+        return OPTIX_SUCCESS;
+}
+
 OptixResult optixProgramGroupCreate(
         OptixDeviceContext context,
         const OptixProgramGroupDesc *programDescriptions,
@@ -81,4 +101,7 @@ extern "C" {
         char embedded_ptx_code[256];
 }
 
+uint3 optixGetLaunchIndex() {
+        return uint3();
+}
 
