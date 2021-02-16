@@ -67,6 +67,9 @@ OptixResult optixProgramGroupCreate(
         }
         return OPTIX_SUCCESS;
 }
+
+void (*raygen)();
+
 OptixResult optixPipelineSetStackSize(
         OptixPipeline  	pipeline,
 	unsigned int  	directCallableStackSizeFromTraversal,
@@ -84,7 +87,16 @@ OptixResult optixLaunch(
         const OptixShaderBindingTable *  	sbt,
         unsigned int  	width,
         unsigned int  	height,
-        unsigned int  	depth) { return OPTIX_SUCCESS; }
+        unsigned int  	depth) {
+
+        std::cout << "gonzo launch: " << width << " " << height << std::endl;
+
+        //raygen();
+
+        return OPTIX_SUCCESS;
+}
+
+
 OptixResult optixPipelineCreate(
                 OptixDeviceContext context,
 		const OptixPipelineCompileOptions * pipelineCompileOptions,
@@ -104,8 +116,7 @@ OptixResult optixPipelineCreate(
                 std::cerr << "dlopen failed!" << std::endl;
                 exit(EXIT_FAILURE);
         }
-        void* raygen = dlsym(handle, "__raygen__renderFrame");
-        std::cout << "gonzo raygen: " << raygen << std::endl;
+        *(void**)(&raygen) = dlsym(handle, "__raygen__renderFrame");
 
         return OPTIX_SUCCESS;
 }
