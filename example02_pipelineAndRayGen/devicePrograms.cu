@@ -14,7 +14,7 @@
 // limitations under the License.                                           //
 // ======================================================================== //
 
-#include <optix_device.h>
+#include "optix_device.h"
 
 #include "LaunchParams.h"
 
