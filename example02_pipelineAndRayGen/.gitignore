@@ -1,1 +1,2 @@
-devicePrograms.o
+devicePrograms.bc
+ex02_pipelineAndRayGen
