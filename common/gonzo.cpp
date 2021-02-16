@@ -1,15 +1,24 @@
 #include "gonzo.h"
 
+
+void cudaStreamCreate(cudaStream_t* pStream) {}
+void cudaGetDeviceProperties(cudaDeviceProp* prop, int device) {}
+void cudaMemcpy(void* dst, const void* src, size_t count, cudaMemcpyKind kind) {}
 void cudaSetDevice(int device) {}
-void cudaFree(void* devPtr) {}
 
 void cudaGetDeviceCount(int* count) {
         *count = 1;
 }
-void cudaStreamCreate(cudaStream_t* pStream) {}
-void cudaGetDeviceProperties(cudaDeviceProp* prop, int device) {}
-void cudaMemcpy(void* dst, const void* src, size_t count, cudaMemcpyKind kind) {}
-void cudaMalloc(void** ptr, size_t size) {}
+
+cudaError_t cudaMalloc(void** ptr, size_t size) {
+        *ptr = malloc(size);
+        return *ptr? cudaSuccess : cudaErrorUnknown;
+}
+
+cudaError_t cudaFree(void* devPtr) {
+        if (devPtr) free(devPtr);
+        return cudaSuccess;
+}
 
 CUresult cuCtxGetCurrent(CUcontext* pctx) { return CUDA_SUCCESS; }
 

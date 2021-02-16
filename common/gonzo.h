@@ -1,11 +1,16 @@
 #include <cstdlib>
-void cudaFree(void* devPtr);
 void cudaGetDeviceCount(int* count);
 void optixInit();
 #define OPTIX_CHECK(call)       call
 //typedef unsigned int CUdeviceptr;
 typedef void* CUdeviceptr;
-void cudaMalloc(void** ptr, size_t size);
+enum cudaError {
+        cudaSuccess = 0,
+        cudaErrorUnknown = 999
+};
+typedef enum cudaError cudaError_t;
+cudaError_t cudaMalloc(void** ptr, size_t size);
+cudaError_t cudaFree(void* devPtr);
 #define CUDA_CHECK(call)        cuda##call
 enum cudaMemcpyKind {
         cudaMemcpyHostToDevice = 1,
