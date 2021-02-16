@@ -16,7 +16,8 @@
 
 // common gdt helper tools
 #include "gdt/gdt.h"
-#include "optix7.h"
+//#include "optix7.h"
+#include "gonzo.h"
 
 /*! \namespace osc - Optix Siggraph Course */
 namespace osc {
