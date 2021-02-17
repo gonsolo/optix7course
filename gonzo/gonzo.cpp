@@ -82,6 +82,9 @@ OptixResult optixSbtRecordPackHeader(
 
 void* launch;
 
+int x;
+int y;
+
 OptixResult optixLaunch(
         OptixPipeline  	pipeline,
         CUstream  	stream,
@@ -96,7 +99,11 @@ OptixResult optixLaunch(
         memcpy(launch, pipelineParams, pipelineParamsSize);
         //launch = pipelineParams;
         //std::cout << "gonzo launch now: " << launch << " " << pipelineParams << std::endl;
-        raygen();
+        for(y = 0; y < height; y++) {
+                for(x = 0; x < width; x++) {
+                        raygen();
+                }
+        }
 
         return OPTIX_SUCCESS;
 }
@@ -142,6 +149,10 @@ extern "C" {
 }
 
 uint3 optixGetLaunchIndex() {
-        return uint3();
+        uint3 index;
+        index.x = x;
+        index.y = y;
+        index.z = 0;
+        return index;
 }
 
