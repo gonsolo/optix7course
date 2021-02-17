@@ -2,12 +2,12 @@
 #include "optix_device.h"
 #include "dlfcn.h"
 #include <cstdlib>
+#include <cstring>
 #include <fstream>
 #include <iostream>
 
 void cudaStreamCreate(cudaStream_t* pStream) {}
 void cudaGetDeviceProperties(cudaDeviceProp* prop, int device) {}
-void cudaMemcpy(void* dst, const void* src, size_t count, cudaMemcpyKind kind) {}
 void cudaSetDevice(int device) {}
 
 void cudaGetDeviceCount(int* count) {
@@ -22,6 +22,10 @@ cudaError_t cudaMalloc(void** ptr, size_t size) {
 cudaError_t cudaFree(void* devPtr) {
         if (devPtr) free(devPtr);
         return cudaSuccess;
+}
+
+void cudaMemcpy(void* dst, const void* src, size_t count, cudaMemcpyKind kind) {
+        memcpy(dst, src, count);
 }
 
 CUresult cuCtxGetCurrent(CUcontext* pctx) { return CUDA_SUCCESS; }
@@ -46,10 +50,6 @@ OptixResult optixModuleCreateFromPTX(
         size_t *logStringSize,
         OptixModule *module) {
         
-        std::ofstream dummy("dummy.cpp");
-        dummy << "int " << pipelineCompileOptions->pipelineLaunchParamsVariableName << ";" << std::endl;
-        dummy.close();
-
         return OPTIX_SUCCESS;
 }
 
@@ -79,6 +79,9 @@ OptixResult optixPipelineSetStackSize(
 OptixResult optixSbtRecordPackHeader(
         OptixProgramGroup programGroup,
         void* sbtRecordHeaderHostPointer) { return OPTIX_SUCCESS; }
+
+void* launch;
+
 OptixResult optixLaunch(
         OptixPipeline  	pipeline,
         CUstream  	stream,
@@ -90,7 +93,9 @@ OptixResult optixLaunch(
         unsigned int  	depth) {
 
         std::cout << "gonzo launch: " << width << " " << height << std::endl;
-
+        memcpy(launch, pipelineParams, pipelineParamsSize);
+        //launch = pipelineParams;
+        //std::cout << "gonzo launch now: " << launch << " " << pipelineParams << std::endl;
         raygen();
 
         return OPTIX_SUCCESS;
@@ -107,6 +112,9 @@ OptixResult optixPipelineCreate(
 		size_t * logStringSize,
 		OptixPipeline * pipeline) {
 
+        std::ofstream dummy("dummy.cpp");
+        dummy << "char " << pipelineCompileOptions->pipelineLaunchParamsVariableName << "[128];" << std::endl;
+        dummy.close();
         std::system("clang++ -g -fpic -c dummy.cpp");
         std::system("clang++ -g -fpic -xc++ -std=c++17 -I ../gonzo/ -I ../common/gdt -I ../gonzo/optix_device.h  -c devicePrograms.cu");
         std::system("clang++ -g -fpic -shared -o dummy.so dummy.o devicePrograms.o");
@@ -117,6 +125,14 @@ OptixResult optixPipelineCreate(
                 exit(EXIT_FAILURE);
         }
         *(void**)(&raygen) = dlsym(handle, "__raygen__renderFrame");
+        if (!raygen) {
+                std::cerr << "no raygen!" << std::endl;
+                exit(EXIT_FAILURE);
+        }
+
+
+        launch = dlsym(handle, pipelineCompileOptions->pipelineLaunchParamsVariableName);
+        std::cout << "gonzo launch var: " << launch << std::endl;
 
         return OPTIX_SUCCESS;
 }
