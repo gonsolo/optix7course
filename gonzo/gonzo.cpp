@@ -95,10 +95,7 @@ OptixResult optixLaunch(
         unsigned int  	height,
         unsigned int  	depth) {
 
-        std::cout << "gonzo launch: " << width << " " << height << std::endl;
         memcpy(launch, pipelineParams, pipelineParamsSize);
-        //launch = pipelineParams;
-        //std::cout << "gonzo launch now: " << launch << " " << pipelineParams << std::endl;
         for(y = 0; y < height; y++) {
                 for(x = 0; x < width; x++) {
                         raygen();
