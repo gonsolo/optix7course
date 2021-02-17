@@ -1,3 +1,4 @@
+#pragma once
 #include <cstdlib>
 void cudaGetDeviceCount(int* count);
 void optixInit();
@@ -273,7 +274,11 @@ typedef unsigned int OptixVisibilityMask;
 enum OptixRayFlags {
         OPTIX_RAY_FLAG_DISABLE_ANYHIT = 1u << 0
 };
+
+#include "../common/gdt/gdt/math/vec.h"
 typedef const gdt::vec_t<float, 3> float3;
+
+extern "C" {
 void optixTrace(
         OptixTraversableHandle  	handle,
 	float3  	rayOrigin,
@@ -288,4 +293,4 @@ void optixTrace(
 	unsigned int  	missSBTIndex,
 	unsigned int &  	p0,
 	unsigned int &  	p1);
-
+}

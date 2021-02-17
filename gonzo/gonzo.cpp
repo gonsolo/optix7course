@@ -95,7 +95,9 @@ OptixResult optixLaunch(
         unsigned int  	height,
         unsigned int  	depth) {
 
+        std::cout << "optixLaunch" << std::endl;
         memcpy(launch, pipelineParams, pipelineParamsSize);
+
         for(y = 0; y < height; y++) {
                 for(x = 0; x < width; x++) {
                         raygen();
@@ -120,7 +122,7 @@ OptixResult optixPipelineCreate(
         dummy << "char " << pipelineCompileOptions->pipelineLaunchParamsVariableName << "[128];" << std::endl;
         dummy.close();
         std::system("clang++ -g -fpic -c dummy.cpp");
-        std::system("clang++ -g -fpic -xc++ -std=c++17 -I ../gonzo/ -I ../common/gdt -I ../gonzo/optix_device.h  -c devicePrograms.cu");
+        std::system("clang -g -fpic -xc++ -I ../gonzo/ -I ../common/gdt -I ../gonzo/optix_device.h  -c devicePrograms.cu");
         std::system("clang++ -g -fpic -shared -o dummy.so dummy.o devicePrograms.o");
 
         void* handle = dlopen("./dummy.so", RTLD_LAZY);
@@ -178,3 +180,19 @@ OptixResult optixAccelCompact(
 	CUdeviceptr  	outputBuffer,
 	size_t  	outputBufferSizeInBytes,
 	OptixTraversableHandle *  	outputHandle) { return OPTIX_SUCCESS; }
+extern "C" {
+void optixTrace(
+        OptixTraversableHandle  	handle,
+	float3  	rayOrigin,
+	float3  	rayDirection,
+	float  	tmin,
+	float  	tmax,
+	float  	rayTime,
+	OptixVisibilityMask  	visibilityMask,
+	unsigned int  	rayFlags,
+	unsigned int  	SBToffset,
+	unsigned int  	SBTstride,
+	unsigned int  	missSBTIndex,
+	unsigned int &  	p0,
+	unsigned int &  	p1) {}
+}
