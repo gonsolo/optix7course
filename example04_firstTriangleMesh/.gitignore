@@ -1,0 +1,4 @@
+*.o
+*.so
+dummy.cpp
+ex04_firstTriangleMesh
