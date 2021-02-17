@@ -73,6 +73,8 @@ struct OptixShaderBindingTable {
 };
 
 #define __align__(alignment)
+#define __forceinline__
+#define __device__
 #define OPTIX_SBT_RECORD_HEADER_SIZE   ( (size_t)32 )
 
 void cudaSetDevice(int device);
@@ -173,3 +175,117 @@ OptixResult optixLaunch(
 		unsigned int  	depth
 	);
 #define CUDA_SYNC_CHECK()
+typedef unsigned long long OptixTraversableHandle;
+enum OptixBuildInputType {
+        OPTIX_BUILD_INPUT_TYPE_TRIANGLES
+};
+enum OptixVertexFormat {
+        OPTIX_VERTEX_FORMAT_FLOAT3
+};
+enum OptixIndicesFormat {
+        OPTIX_INDICES_FORMAT_UNSIGNED_INT3
+};
+enum OptixTransformFormat {};
+struct OptixBuildInputTriangleArray {
+        const CUdeviceptr* vertexBuffers;
+        unsigned int numVertices;
+        OptixVertexFormat vertexFormat;
+        unsigned int vertexStrideInBytes;
+        CUdeviceptr indexBuffer;
+        unsigned int numIndexTriplets;
+        OptixIndicesFormat indexFormat;
+        unsigned int indexStrideInBytes;
+        CUdeviceptr preTransform;
+        const unsigned int* flags;
+        unsigned int numSbtRecords;
+        CUdeviceptr sbtIndexOffsetBuffer;
+        unsigned int sbtIndexOffsetSizeInBytes;
+        unsigned int sbtIndexOffsetStrideInBytes;
+        unsigned int primitiveIndexOffset;
+        OptixTransformFormat transformFormat;
+};
+struct OptixBuildInput {
+        OptixBuildInputType type;
+        union {
+                OptixBuildInputTriangleArray triangleArray;
+        };
+};
+enum OptixBuildFlags {
+        OPTIX_BUILD_FLAG_NONE,
+        OPTIX_BUILD_FLAG_ALLOW_COMPACTION
+};
+struct OptixMotionOptions {
+        unsigned short numKeys;
+        unsigned short flags;
+        float timeBegin;
+        float timeEnd;
+};
+enum OptixBuildOperation {
+        OPTIX_BUILD_OPERATION_BUILD
+};
+struct OptixAccelBuildOptions {
+        unsigned int buildFlags;
+        OptixBuildOperation operation;
+        OptixMotionOptions motionOptions;
+};
+struct OptixAccelBufferSizes {
+        size_t outputSizeInBytes;
+        size_t tempSizeInBytes;
+        size_t tempUpdateSizeInBytes;
+};
+OptixResult optixAccelComputeMemoryUsage(
+                OptixDeviceContext context,
+		const OptixAccelBuildOptions *accelOptions,
+		const OptixBuildInput *buildInputs,
+		unsigned int numBuildInputs,
+		OptixAccelBufferSizes * bufferSizes);
+enum OptixAccelPropertyType {
+        OPTIX_PROPERTY_TYPE_COMPACTED_SIZE
+};
+struct OptixAccelEmitDesc {
+        CUdeviceptr result;
+        OptixAccelPropertyType type;
+};
+OptixResult optixAccelBuild(
+        OptixDeviceContext context,
+	CUstream stream,
+	const OptixAccelBuildOptions * accelOptions,
+	const OptixBuildInput * buildInputs,
+	unsigned int  	numBuildInputs,
+	CUdeviceptr  	tempBuffer,
+	size_t  	tempBufferSizeInBytes,
+	CUdeviceptr  	outputBuffer,
+	size_t  	outputBufferSizeInBytes,
+	OptixTraversableHandle * outputHandle,
+	const OptixAccelEmitDesc * emittedProperties,
+	unsigned int  	numEmittedProperties);
+OptixResult optixAccelCompact(
+        OptixDeviceContext  	context,
+	CUstream  	stream,
+	OptixTraversableHandle  	inputHandle,
+	CUdeviceptr  	outputBuffer,
+	size_t  	outputBufferSizeInBytes,
+	OptixTraversableHandle *  	outputHandle);
+unsigned int optixGetPayload_0();
+unsigned int optixGetPayload_1();
+unsigned int optixGetPrimitiveIndex();
+typedef unsigned int OptixVisibilityMask;
+enum OptixRayFlags {
+        OPTIX_RAY_FLAG_DISABLE_ANYHIT = 1u << 0
+};
+typedef const gdt::vec_t<float, 3> float3;
+void optixTrace(
+        OptixTraversableHandle  	handle,
+	float3  	rayOrigin,
+	float3  	rayDirection,
+	float  	tmin,
+	float  	tmax,
+	float  	rayTime,
+	OptixVisibilityMask  	visibilityMask,
+	unsigned int  	rayFlags,
+	unsigned int  	SBToffset,
+	unsigned int  	SBTstride,
+	unsigned int  	missSBTIndex,
+	unsigned int &  	p0,
+	unsigned int &  	p1);
+

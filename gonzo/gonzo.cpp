@@ -152,4 +152,29 @@ uint3 optixGetLaunchIndex() {
         index.z = 0;
         return index;
 }
-
+OptixResult optixAccelComputeMemoryUsage(
+        OptixDeviceContext context,
+        const OptixAccelBuildOptions *accelOptions,
+        const OptixBuildInput *buildInputs,
+        unsigned int numBuildInputs,
+        OptixAccelBufferSizes * bufferSizes) { return OPTIX_SUCCESS; }
+OptixResult optixAccelBuild(
+        OptixDeviceContext context,
+	CUstream stream,
+	const OptixAccelBuildOptions * accelOptions,
+	const OptixBuildInput * buildInputs,
+	unsigned int  	numBuildInputs,
+	CUdeviceptr  	tempBuffer,
+	size_t  	tempBufferSizeInBytes,
+	CUdeviceptr  	outputBuffer,
+	size_t  	outputBufferSizeInBytes,
+	OptixTraversableHandle * outputHandle,
+	const OptixAccelEmitDesc * emittedProperties,
+	unsigned int  	numEmittedProperties) { return OPTIX_SUCCESS; }
+OptixResult optixAccelCompact(
+        OptixDeviceContext  	context,
+	CUstream  	stream,
+	OptixTraversableHandle  	inputHandle,
+	CUdeviceptr  	outputBuffer,
+	size_t  	outputBufferSizeInBytes,
+	OptixTraversableHandle *  	outputHandle) { return OPTIX_SUCCESS; }
