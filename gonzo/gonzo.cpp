@@ -107,9 +107,9 @@ OptixResult optixPipelineCreate(
 		size_t * logStringSize,
 		OptixPipeline * pipeline) {
 
-        std::system("clang++ -fpic -c dummy.cpp");
-        std::system("clang++ -fpic -xc++ -std=c++17 -I ../gonzo/ -I ../common/gdt -I ../gonzo/optix_device.h  -c devicePrograms.cu");
-        std::system("clang++ -fpic -shared -o dummy.so dummy.o devicePrograms.o");
+        std::system("clang++ -g -fpic -c dummy.cpp");
+        std::system("clang++ -g -fpic -xc++ -std=c++17 -I ../gonzo/ -I ../common/gdt -I ../gonzo/optix_device.h  -c devicePrograms.cu");
+        std::system("clang++ -g -fpic -shared -o dummy.so dummy.o devicePrograms.o");
 
         void* handle = dlopen("./dummy.so", RTLD_LAZY);
         if (!handle) {
