@@ -337,7 +337,6 @@ namespace osc {
                                          ));
     if (sizeof_log > 1) PRINT(log);
   }
-    
 
 
   /*! does all setup for the raygen program(s) we are going to use */

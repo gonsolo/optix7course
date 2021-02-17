@@ -95,7 +95,6 @@ OptixResult optixLaunch(
         unsigned int  	height,
         unsigned int  	depth) {
 
-        std::cout << "optixLaunch" << std::endl;
         memcpy(launch, pipelineParams, pipelineParamsSize);
 
         for(y = 0; y < height; y++) {
@@ -135,11 +134,7 @@ OptixResult optixPipelineCreate(
                 std::cerr << "no raygen!" << std::endl;
                 exit(EXIT_FAILURE);
         }
-
-
         launch = dlsym(handle, pipelineCompileOptions->pipelineLaunchParamsVariableName);
-        std::cout << "gonzo launch var: " << launch << std::endl;
-
         return OPTIX_SUCCESS;
 }
 
@@ -172,7 +167,13 @@ OptixResult optixAccelBuild(
 	size_t  	outputBufferSizeInBytes,
 	OptixTraversableHandle * outputHandle,
 	const OptixAccelEmitDesc * emittedProperties,
-	unsigned int  	numEmittedProperties) { return OPTIX_SUCCESS; }
+	unsigned int  	numEmittedProperties) {
+
+        std::cout << "gonzo number of vertices: " << buildInputs->triangleArray.numVertices << std::endl;
+
+        return OPTIX_SUCCESS;
+}
+
 OptixResult optixAccelCompact(
         OptixDeviceContext  	context,
 	CUstream  	stream,

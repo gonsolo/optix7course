@@ -82,7 +82,7 @@ namespace osc {
       glEnd();
     }
     
-    virtual void resize(const vec2i &newSize) 
+    virtual void resize(const vec2i &newSize) override
     {
       fbSize = newSize;
       sample.resize(newSize);
