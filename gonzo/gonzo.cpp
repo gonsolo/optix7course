@@ -91,7 +91,7 @@ OptixResult optixLaunch(
 
         std::cout << "gonzo launch: " << width << " " << height << std::endl;
 
-        //raygen();
+        raygen();
 
         return OPTIX_SUCCESS;
 }
@@ -107,9 +107,9 @@ OptixResult optixPipelineCreate(
 		size_t * logStringSize,
 		OptixPipeline * pipeline) {
 
-        std::system("clang++ -fPIC -c dummy.cpp");
-        std::system("clang++ -fPIC -xc++ -std=c++17 -I ../gonzo/ -I ../common/gdt -I ../gonzo/optix_device.h  -c devicePrograms.cu");
-        std::system("clang++ -shared -o dummy.so dummy.o devicePrograms.o");
+        std::system("clang++ -fpic -c dummy.cpp");
+        std::system("clang++ -fpic -xc++ -std=c++17 -I ../gonzo/ -I ../common/gdt -I ../gonzo/optix_device.h  -c devicePrograms.cu");
+        std::system("clang++ -fpic -shared -o dummy.so dummy.o devicePrograms.o");
 
         void* handle = dlopen("./dummy.so", RTLD_LAZY);
         if (!handle) {

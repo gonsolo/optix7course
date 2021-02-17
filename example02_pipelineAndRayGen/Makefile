@@ -1,7 +1,7 @@
 all: ex02_pipelineAndRayGen
 	./ex02_pipelineAndRayGen
 ex02_pipelineAndRayGen: main.cpp SampleRenderer.cpp ../gonzo/gonzo.cpp
-	clang++ -g -I../common -I../gonzo -I../common/gdt -o $@ $^ -ldl
+	clang++ -g -rdynamic -I../common -I../gonzo -I../common/gdt -o $@ $^ -ldl
 c: clean
 clean:
 	rm -f ex02_pipelineAndRayGen devicePrograms.bc devicePrograms.o
