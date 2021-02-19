@@ -169,7 +169,20 @@ OptixResult optixAccelBuild(
 	const OptixAccelEmitDesc * emittedProperties,
 	unsigned int  	numEmittedProperties) {
 
-        std::cout << "gonzo number of vertices: " << buildInputs->triangleArray.numVertices << std::endl;
+        std::cout << "gonzo number of index triplets: " << buildInputs->triangleArray.numIndexTriplets << std::endl;
+        auto numIndices = buildInputs->triangleArray.numIndexTriplets * 3;
+        for (int i = 0; i < numIndices; i++) {
+                std::cout << ((int*)buildInputs->triangleArray.indexBuffer)[i] << " ";
+        }
+        std::cout << std::endl;
+        auto numVertices = buildInputs->triangleArray.numVertices;
+        std::cout << "gonzo number of vertices: " << numVertices << std::endl;
+        for (int i = 0; i < numVertices; i++) {
+                std::cout << ((float*)buildInputs->triangleArray.vertexBuffers[0])[i] << " ";
+        }
+        std::cout << std::endl;
+
+        exit(0);
 
         return OPTIX_SUCCESS;
 }
