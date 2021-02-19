@@ -1,6 +1,8 @@
-all: gonzo.o libGonzales.so
+all: gonzo.so libGonzales.so
 gonzo.o: gonzo.cpp
-	clang++ -I../common/gdt -c $<
+	clang++ -fpic -I../common/gdt -c $<
+gonzo.so: gonzo.o
+	clang++ -shared -o $@ $<
 c: clean
 clean:
 	rm -f gonzo.o libGonzales.so
