@@ -6,7 +6,11 @@
 #include <fstream>
 #include <iostream>
 
-extern "C" void bla(int* indices);
+extern "C" void bla(
+        unsigned int numIndices,
+        uint32_t* indices,
+        unsigned int numVertices,
+        float* vertices);
 
 void cudaStreamCreate(cudaStream_t* pStream) {}
 void cudaGetDeviceProperties(cudaDeviceProp* prop, int device) {}
@@ -172,22 +176,23 @@ OptixResult optixAccelBuild(
 	unsigned int  	numEmittedProperties) {
 
         auto& triangleArray = buildInputs->triangleArray;
-        auto indices = (int*)triangleArray.indexBuffer;
+        auto indices = (uint32_t*)triangleArray.indexBuffer;
         //std::cout << "gonzo number of index triplets: " << buildInputs->triangleArray.numIndexTriplets << std::endl;
         auto numIndices = triangleArray.numIndexTriplets * 3;
         //for (int i = 0; i < numIndices; i++) {
         //        std::cout << ((int*)buildInputs->triangleArray.indexBuffer)[i] << " ";
         //}
         //std::cout << std::endl;
-        auto numVertices = buildInputs->triangleArray.numVertices;
+        auto numVertices = triangleArray.numVertices;
         //std::cout << "gonzo number of vertices: " << numVertices << std::endl;
         //for (int i = 0; i < numVertices; i++) {
         //        std::cout << ((float*)buildInputs->triangleArray.vertexBuffers[0])[i] << " ";
         //}
         //std::cout << std::endl;
+        auto vertices = (float*)triangleArray.vertexBuffers[0];
 
-        std::cout << "gonzo c++ index: " << indices[0] << std::endl;
-        bla(indices);
+        std::cout << "gonzo c++ numIndices: " << numIndices << ", index: " << indices[0] << std::endl;
+        bla(numIndices, indices, numVertices, vertices);
 
         return OPTIX_SUCCESS;
 }

@@ -1,11 +1,22 @@
 import Foundation
 
 @_cdecl("bla")
-func bla(indices: UnsafeMutablePointer<UInt32>) {
-        print("gonzo swift index: ", indices[0])
-        /*
-        let indices = [Int]()
-        let points = [Point]()
+func bla(
+        numIndices: UInt,
+        indexPointer: UnsafeMutablePointer<UInt32>,
+        numVertices: UInt,
+        vertexPointer: UnsafeMutablePointer<Float>) {
+        //print("gonzo swift numIndices: \(numIndices), index: \(indexPointer[0])")
+        var indices = [UInt32]()
+        for i in 0..<Int(numIndices) {
+                indices.append(indexPointer[i])
+        }
+        var points = [Point]()
+        for i in 0..<Int(numVertices) {
+                let index = 3 * i
+                let point = Point(x: vertexPointer[index], y: vertexPointer[index+1], z: vertexPointer[index+2])
+                points.append(point)
+        }
         do {
                 let _ = try createTriangleMesh(
                         indices: indices,
@@ -16,5 +27,4 @@ func bla(indices: UnsafeMutablePointer<UInt32>) {
         } catch {
                 print("Error!")
         }
-        */
 }
