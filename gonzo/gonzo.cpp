@@ -6,7 +6,7 @@
 #include <fstream>
 #include <iostream>
 
-extern "C" void bla();
+extern "C" void bla(int* indices);
 
 void cudaStreamCreate(cudaStream_t* pStream) {}
 void cudaGetDeviceProperties(cudaDeviceProp* prop, int device) {}
@@ -171,22 +171,23 @@ OptixResult optixAccelBuild(
 	const OptixAccelEmitDesc * emittedProperties,
 	unsigned int  	numEmittedProperties) {
 
-        std::cout << "gonzo number of index triplets: " << buildInputs->triangleArray.numIndexTriplets << std::endl;
-        auto numIndices = buildInputs->triangleArray.numIndexTriplets * 3;
-        for (int i = 0; i < numIndices; i++) {
-                std::cout << ((int*)buildInputs->triangleArray.indexBuffer)[i] << " ";
-        }
-        std::cout << std::endl;
+        auto& triangleArray = buildInputs->triangleArray;
+        auto indices = (int*)triangleArray.indexBuffer;
+        //std::cout << "gonzo number of index triplets: " << buildInputs->triangleArray.numIndexTriplets << std::endl;
+        auto numIndices = triangleArray.numIndexTriplets * 3;
+        //for (int i = 0; i < numIndices; i++) {
+        //        std::cout << ((int*)buildInputs->triangleArray.indexBuffer)[i] << " ";
+        //}
+        //std::cout << std::endl;
         auto numVertices = buildInputs->triangleArray.numVertices;
-        std::cout << "gonzo number of vertices: " << numVertices << std::endl;
-        for (int i = 0; i < numVertices; i++) {
-                std::cout << ((float*)buildInputs->triangleArray.vertexBuffers[0])[i] << " ";
-        }
-        std::cout << std::endl;
+        //std::cout << "gonzo number of vertices: " << numVertices << std::endl;
+        //for (int i = 0; i < numVertices; i++) {
+        //        std::cout << ((float*)buildInputs->triangleArray.vertexBuffers[0])[i] << " ";
+        //}
+        //std::cout << std::endl;
 
-        bla();
-        std::cout << "gonzo after bla" << std::endl;
-        exit(0);
+        std::cout << "gonzo c++ index: " << indices[0] << std::endl;
+        bla(indices);
 
         return OPTIX_SUCCESS;
 }

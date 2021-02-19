@@ -1,8 +1,9 @@
 import Foundation
 
 @_cdecl("bla")
-func bla() {
-        print("bla")
+func bla(indices: UnsafeMutablePointer<UInt32>) {
+        print("gonzo swift index: ", indices[0])
+        /*
         let indices = [Int]()
         let points = [Point]()
         do {
@@ -15,4 +16,5 @@ func bla() {
         } catch {
                 print("Error!")
         }
+        */
 }
