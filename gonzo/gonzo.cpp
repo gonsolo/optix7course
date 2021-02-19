@@ -6,6 +6,8 @@
 #include <fstream>
 #include <iostream>
 
+extern "C" void bla();
+
 void cudaStreamCreate(cudaStream_t* pStream) {}
 void cudaGetDeviceProperties(cudaDeviceProp* prop, int device) {}
 void cudaSetDevice(int device) {}
@@ -182,6 +184,7 @@ OptixResult optixAccelBuild(
         }
         std::cout << std::endl;
 
+        bla();
         exit(0);
 
         return OPTIX_SUCCESS;
