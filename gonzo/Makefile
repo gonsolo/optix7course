@@ -5,4 +5,4 @@ c: clean
 clean:
 	rm -f gonzo.o libGonzales.so
 libGonzales.so:
-	swiftc -emit-library -module-name Gonzales Three.swift Vector3.swift Point3.swift Float.swift
+	swiftc -emit-library -module-name Gonzales Triangle.swift Three.swift Vector3.swift Point3.swift Float.swift Normal3.swift Vector2.swift Bounds3.swift SurfaceInteraction.swift Ray.swift Geometry.swift Point2.swift Boundable.swift Intersectable.swift Utility.swift Interaction.swift

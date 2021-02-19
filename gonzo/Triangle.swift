@@ -63,7 +63,7 @@ final class Triangle<VertexIndex: BinaryInteger> {
                         throw TriangleError.index
                 }
         }
-
+/*
         static func formatHuman(_ number: Int) -> String {
                 if number > 1024 * 1024 {
                         return String(format: "%.1f", Double(number) / 1024.0 / 1024.0) + "MB"
@@ -73,10 +73,10 @@ final class Triangle<VertexIndex: BinaryInteger> {
                 }
                 return String(number) + " bytes"
         }
-
+*/
         static func statistics() {
                 print("  Number of triangles:\t\t\t\t\t\t\t\(numberOfTriangles)")
-                print("  Triangle memory:\t\t\t\t\t\t\t\(formatHuman(triangleMemory))")
+                //print("  Triangle memory:\t\t\t\t\t\t\t\(formatHuman(triangleMemory))")
                 print("  Number of triangle intersection tests:\t\t\t\t\(triangleIntersections)")
                 print("  Triangle worldBound calls:\t\t\t\t\t\t\(worldBoundCalled)")
         }
@@ -117,7 +117,7 @@ final class Triangle<VertexIndex: BinaryInteger> {
                         return nil
                 }
 
-                let ray = worldToObject * worldRay
+                let ray = worldRay
 
                 triangleIntersections += 1
 
@@ -267,17 +267,17 @@ final class Triangle<VertexIndex: BinaryInteger> {
                 let p2 = getLocalPoint(index: vertexIndex2)
                 return (p0, p1, p2)
         }
-
+/*
         private func uniformSampleTriangle(u: Point2F) -> Point2F {
                 let su0 = u[0].squareRoot()
                 return Point2F(x: 1 - su0, y: u[1] * su0)
         }
-
+*/
         func area() -> FloatX {
                 let (p0, p1, p2) = getLocalPoints()
                 return 0.5 * length(cross(Vector(vector: (p1 - p0)), p2 - p0))
         }
-
+/*
         func sample(u: Point2F) -> (interaction: Interaction, pdf: FloatX) {
                 let b = uniformSampleTriangle(u: u)
                 let (p0, p1, p2) = getLocalPoints()
@@ -292,7 +292,7 @@ final class Triangle<VertexIndex: BinaryInteger> {
                 let pdf = 1 / area()
                 return (worldInteraction, pdf)
         }
-
+*/
         var description: String {
                 var d = "Triangle [ "
                 let (p0, p1, p2) = getLocalPoints()
@@ -307,10 +307,10 @@ final class Triangle<VertexIndex: BinaryInteger> {
         // possible/slow with UInt8 or others.
         let idx: VertexIndex
 }
-
+/*
 func createTriangleMeshShape(
         parameters: ParameterDictionary
-) throws -> [Triangle] {
+) throws -> [Triangle<Int>] {
         let indices = try parameters.findInts(name: "indices")
         guard indices.count % 3 == 0 else {
                 throw ApiError.input(message: "Triangle indices must be multiplies of 3")
@@ -363,14 +363,14 @@ func createTriangleMeshShape(
                 uvs: uvs,
                 faceIndices: faceIndices)
 }
-
+*/
 func createTriangleMesh<Index: BinaryInteger>(
         indices: [Index],
         points: [Point],
         normals: [Normal],
         uvs: [Vector2F],
         faceIndices: [Index]
-) throws -> [Triangle] {
+) throws -> [Triangle<Index>] {
         let numberTriangles = indices.count / 3
         let trianglePoints = points
         let triangleNormals = normals

@@ -62,11 +62,11 @@ extension Vector3 {
                 self.y = point.y
                 self.z = point.z
         }
-//        init(normal: Normal3<T>) {
-//                self.x = normal.x
-//                self.y = normal.y
-//                self.z = normal.z
-//        }
+        init(normal: Normal3<T>) {
+                self.x = normal.x
+                self.y = normal.y
+                self.z = normal.z
+        }
 }
 
 extension Vector3: CustomStringConvertible {
