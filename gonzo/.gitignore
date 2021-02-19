@@ -1,3 +1,4 @@
 libGonzales.so
-gonzo.o
+/*.o
 gonzo.so
+libGonzo.a

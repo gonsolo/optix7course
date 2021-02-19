@@ -185,6 +185,7 @@ OptixResult optixAccelBuild(
         std::cout << std::endl;
 
         bla();
+        std::cout << "gonzo after bla" << std::endl;
         exit(0);
 
         return OPTIX_SUCCESS;

@@ -1,6 +1,8 @@
+import Foundation
 
 @_cdecl("bla")
 func bla() {
+        print("bla")
         let indices = [Int]()
         let points = [Point]()
         do {
