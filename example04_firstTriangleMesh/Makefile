@@ -4,14 +4,16 @@ TARGET = ex04_firstTriangleMesh
 all: $(TARGET)
 	LD_LIBRARY_PATH=$(SWIFT_PATH)/linux:../gonzo ./$(TARGET)
 $(TARGET): main.cpp SampleRenderer.cpp ../common/glfWindow/GLFWindow.cpp
-	clang++ -g -rdynamic -I../common -I../gonzo -I../common/gdt -o $@ $^ -ldl -lglfw -lOpenGL -L../gonzo -lGonzales $(SWIFT_LIBS)
+	clang++ -O2 -g -rdynamic -I../common -I../gonzo -I../common/gdt -o $@ $^ -ldl -lglfw -lOpenGL -L../gonzo -lGonzales $(SWIFT_LIBS)
 c: clean
 clean:
 	rm -f $(TARGET) devicePrograms.bc devicePrograms.o
 	rm -f dummy.cpp dummy.o dummy.so
 devicePrograms.o: devicePrograms.bc
-	clang -c $<
+	clang -O2 -c $<
 devicePrograms.bc: devicePrograms.cu
-	clang++ -emit-llvm -xc++ -std=c++17 -I ../common/gdt -I ../gonzo/optix_device.h -c devicePrograms.cu
+	clang++ -O2 -emit-llvm -xc++ -std=c++17 -I ../common/gdt -I ../gonzo/optix_device.h -c devicePrograms.cu
 gdb:
-	LD_LIBRARY_PATH=$(SWIFT_PATH)/linux gdb ./$(TARGET)
+	LD_LIBRARY_PATH=$(SWIFT_PATH)/linux:../gonzo gdb ./$(TARGET)
+perf:
+	LD_LIBRARY_PATH=$(SWIFT_PATH)/linux:../gonzo perf record ./$(TARGET)

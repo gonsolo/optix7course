@@ -6,12 +6,12 @@ all: libGonzales.so
 #libGonzo.so: gonzo.o
 #	clang++ -shared -o $@ $<
 gonzo.o: gonzo.cpp
-	clang++ -fpic -I../common/gdt -c $<
+	clang++ -O2 -fpic -I../common/gdt -c $<
 #libGonzo.a: gonzo.o $(SWIFT_SOURCE)
 #	swiftc -module-name Gonzales -emit-object $(SWIFT_SOURCE)
 #	ar r $@ gonzo.o $(SWIFT_OBJ)
 libGonzales.so: $(SWIFT_SOURCE) gonzo.o
-	swiftc -emit-library -module-name Gonzales $^
+	swiftc -Ounchecked -emit-library -module-name Gonzales $^
 c: clean
 clean:
 	rm -f gonzo.o libGonzo.a libGonzo.so libGonzales.so

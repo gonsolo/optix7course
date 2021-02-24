@@ -6,11 +6,18 @@
 #include <fstream>
 #include <iostream>
 
-extern "C" void accelBuild(
+extern "C" {
+void accelBuild(
         unsigned int numIndices,
         uint32_t* indices,
         unsigned int numVertices,
         float* vertices);
+
+void trace(float ox, float oy, float oz,
+           float dx, float dy, float dz,
+           float tmax,
+           float* result);
+}
 
 void cudaStreamCreate(cudaStream_t* pStream) {}
 void cudaGetDeviceProperties(cudaDeviceProp* prop, int device) {}
@@ -124,7 +131,7 @@ OptixResult optixPipelineCreate(
 		OptixPipeline * pipeline) {
 
         std::ofstream dummy("dummy.cpp");
-        dummy << "char " << pipelineCompileOptions->pipelineLaunchParamsVariableName << "[128];" << std::endl;
+        dummy << "char " << pipelineCompileOptions->pipelineLaunchParamsVariableName << "[256];" << std::endl;
         dummy.close();
         std::system("clang++ -g -fpic -c dummy.cpp");
         std::system("clang -g -fpic -xc++ -I ../gonzo/ -I ../common/gdt -I ../gonzo/optix_device.h  -c devicePrograms.cu");
@@ -196,6 +203,15 @@ OptixResult optixAccelCompact(
 	size_t  	outputBufferSizeInBytes,
 	OptixTraversableHandle *  	outputHandle) { return OPTIX_SUCCESS; }
 
+static void *unpackPointer(uint32_t i0, uint32_t i1) {
+        const uint64_t uptr = static_cast<uint64_t>( i0 ) << 32 | i1;
+        void* ptr = reinterpret_cast<void*>( uptr );
+        return ptr;
+}
+
+
+int counter = 0;
+
 extern "C" {
 
 void optixTrace(
@@ -213,6 +229,11 @@ void optixTrace(
 	unsigned int &  	p0,
 	unsigned int &  	p1) {
 
-        //std::cout << "optixTrace" << std::endl;
+        float* pointer = (float*)unpackPointer(p0, p1);
+        trace(rayOrigin.x, rayOrigin.y, rayOrigin.z,
+              rayDirection.x, rayDirection.y, rayDirection.z,
+              tmax,
+              pointer);
+        //std::cout << "gonzo optixTrace " << pointer[0] << " " << counter++ << std::endl;
 }
 }

@@ -520,7 +520,7 @@ namespace osc {
     if (launchParams.frame.size.x == 0) return;
       
     launchParamsBuffer.upload(&launchParams,1);
-      
+ 
     OPTIX_CHECK(optixLaunch(/*! pipeline we're launching launch: */
                             pipeline,stream,
                             /*! parameters and SBT */
