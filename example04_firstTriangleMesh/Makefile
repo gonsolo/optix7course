@@ -3,8 +3,10 @@ include ../Makefile.config
 TARGET = ex04_firstTriangleMesh
 all: $(TARGET)
 	LD_LIBRARY_PATH=$(SWIFT_PATH)/linux ./$(TARGET)
-$(TARGET): main.cpp SampleRenderer.cpp ../common/glfWindow/GLFWindow.cpp
-	clang++ -g -rdynamic -I../common -I../gonzo -I../common/gdt -o $@ $^ ../gonzo/libGonzo.a -ldl -lglfw -lOpenGL $(SWIFT_LIBS_PATH) $(SWIFT_LIBS)
+$(TARGET): main.cpp SampleRenderer.cpp ../common/glfWindow/GLFWindow.cpp ../gonzo/libGonzo.a
+	clang++ -g -rdynamic -I../common -I../gonzo -I../common/gdt -o $@ $^ -ldl -lglfw -lOpenGL $(SWIFT_LIBS)
+../gonzo/libGonzo.a:
+	$(MAKE) -C ../gonzo
 c: clean
 clean:
 	rm -f $(TARGET) devicePrograms.bc devicePrograms.o
