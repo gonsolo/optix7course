@@ -267,9 +267,12 @@ OptixResult optixAccelCompact(
 	CUdeviceptr  	outputBuffer,
 	size_t  	outputBufferSizeInBytes,
 	OptixTraversableHandle *  	outputHandle);
+
+extern "C" {
 unsigned int optixGetPayload_0();
 unsigned int optixGetPayload_1();
 unsigned int optixGetPrimitiveIndex();
+}
 typedef unsigned int OptixVisibilityMask;
 enum OptixRayFlags {
         OPTIX_RAY_FLAG_DISABLE_ANYHIT = 1u << 0

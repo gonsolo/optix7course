@@ -16,7 +16,7 @@ void accelBuild(
 void trace(float ox, float oy, float oz,
            float dx, float dy, float dz,
            float tmax,
-           float* result);
+           int* result);
 }
 
 void cudaStreamCreate(cudaStream_t* pStream) {}
@@ -82,6 +82,8 @@ OptixResult optixProgramGroupCreate(
 }
 
 void (*raygen)();
+void (*closest)();
+void (*miss)();
 
 OptixResult optixPipelineSetStackSize(
         OptixPipeline  	pipeline,
@@ -145,6 +147,16 @@ OptixResult optixPipelineCreate(
         *(void**)(&raygen) = dlsym(handle, "__raygen__renderFrame");
         if (!raygen) {
                 std::cerr << "no raygen!" << std::endl;
+                exit(EXIT_FAILURE);
+        }
+        *(void**)(&closest) = dlsym(handle, "__closesthit__radiance");
+        if (!closest) {
+                std::cerr << "no closest!" << std::endl;
+                exit(EXIT_FAILURE);
+        }
+        *(void**)(&miss) = dlsym(handle, "__miss__radiance");
+        if (!miss) {
+                std::cerr << "no miss!" << std::endl;
                 exit(EXIT_FAILURE);
         }
         launch = dlsym(handle, pipelineCompileOptions->pipelineLaunchParamsVariableName);
@@ -211,6 +223,9 @@ static void *unpackPointer(uint32_t i0, uint32_t i1) {
 
 
 int counter = 0;
+int primitiveIndex = 0;
+unsigned int payload0 = 0;
+unsigned int payload1 = 0;
 
 extern "C" {
 
@@ -229,11 +244,33 @@ void optixTrace(
 	unsigned int &  	p0,
 	unsigned int &  	p1) {
 
-        float* pointer = (float*)unpackPointer(p0, p1);
+        int* pointer = (int*)unpackPointer(p0, p1);
         trace(rayOrigin.x, rayOrigin.y, rayOrigin.z,
               rayDirection.x, rayDirection.y, rayDirection.z,
               tmax,
               pointer);
-        //std::cout << "gonzo optixTrace " << pointer[0] << " " << counter++ << std::endl;
+
+        payload0 = p0;
+        payload1 = p1;
+
+        if (*pointer == 0) {
+                miss();                
+        } else {
+                primitiveIndex = *pointer;
+                closest();
+        }
 }
+
+unsigned int optixGetPrimitiveIndex() {
+        return primitiveIndex;
+}
+
+unsigned int optixGetPayload_0() {
+        return payload0;
+}
+
+unsigned int optixGetPayload_1() {
+        return payload1;
+}
+
 }
