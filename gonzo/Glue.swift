@@ -48,8 +48,11 @@ func trace(
                         result.pointee = 0
                         return
                 }
-                //result.pointee = interaction.primitive as! Int
-                result.pointee = 23
+                guard let triangle = interaction.primitive as? Triangle<UInt32> else {
+                        result.pointee = 0
+                        return
+                }
+                result.pointee = Int(triangle.idx)
         } catch {
                 print("Error trace!")
         }

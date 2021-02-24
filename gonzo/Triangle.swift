@@ -251,7 +251,10 @@ final class Triangle<VertexIndex: BinaryInteger>: Shape {
                         wo: -ray.direction,
                         dpdu: dpdu,
                         uv: uvHit,
-                        faceIndex: Int(faceIndex))
+                        faceIndex: Int(faceIndex),
+
+                        primitive: self
+                        )
                 let worldInteraction = localInteraction
                 tHit = t
                 triangleHits += 1
@@ -372,7 +375,6 @@ func createTriangleMesh<Index: BinaryInteger>(
         uvs: [Vector2F],
         faceIndices: [Index]
 ) throws -> [Triangle<Index>] {
-//) throws -> [Shape] {
         let numberTriangles = indices.count / 3
         let trianglePoints = points
         let triangleNormals = normals
