@@ -2,12 +2,10 @@ include ../Makefile.config
 
 TARGET = ex02_pipelineAndRayGen
 all: $(TARGET)
-	LD_LIBRARY_PATH=$(SWIFT_PATH)/linux ./$(TARGET)
+	LD_LIBRARY_PATH=$(SWIFT_PATH)/linux:../gonzo ./$(TARGET)
 	eog osc_example2.png
-$(TARGET): main.cpp SampleRenderer.cpp ../gonzo/libGonzo.a
-	clang++ -g -rdynamic -I../common -I../gonzo -I../common/gdt -o $@ $^ -ldl $(SWIFT_LIBS)
-../gonzo/libGonzo.a:
-	$(MAKE) -C ../gonzo
+$(TARGET): main.cpp SampleRenderer.cpp
+	clang++ -g -rdynamic -I../common -I../gonzo -I../common/gdt -o $@ $^ -L../gonzo -lGonzales -ldl $(SWIFT_LIBS)
 c: clean
 clean:
 	rm -f $(TARGET) devicePrograms.bc devicePrograms.o

@@ -2,11 +2,9 @@ include ../Makefile.config
 
 TARGET = ex03_inGLFWindow
 all: $(TARGET)
-	LD_LIBRARY_PATH=$(SWIFT_PATH)/linux ./$(TARGET)
-$(TARGET): main.cpp SampleRenderer.cpp ../common/glfWindow/GLFWindow.cpp ../gonzo/libGonzo.a
-	clang++ -g -rdynamic -I../common -I../gonzo -I../common/gdt -o $@ $^ -ldl -lglfw -lOpenGL $(SWIFT_LIBS)
-../gonzo/libGonzo.a:
-	$(MAKE) -C ../gonzo
+	LD_LIBRARY_PATH=$(SWIFT_PATH)/linux:../gonzo ./$(TARGET)
+$(TARGET): main.cpp SampleRenderer.cpp ../common/glfWindow/GLFWindow.cpp
+	clang++ -g -rdynamic -I../common -I../gonzo -I../common/gdt -o $@ $^ -L../gonzo -lGonzales -ldl -lglfw -lOpenGL $(SWIFT_LIBS)
 c: clean
 clean:
 	rm -f $(TARGET) devicePrograms.bc devicePrograms.o
