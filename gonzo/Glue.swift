@@ -6,7 +6,7 @@ func bla(
         indexPointer: UnsafeMutablePointer<UInt32>,
         numVertices: UInt,
         vertexPointer: UnsafeMutablePointer<Float>) {
-        //print("gonzo swift numIndices: \(numIndices), index: \(indexPointer[0])")
+        print("gonzo swift numIndices: \(numIndices), index: \(indexPointer[0])")
         var indices = [UInt32]()
         for i in 0..<Int(numIndices) {
                 indices.append(indexPointer[i])

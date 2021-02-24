@@ -1,7 +1,5 @@
-SWIFT_PATH = /home/gonsolo/downloads/swift-5.3.3-RELEASE-ubuntu20.04/usr/lib/swift
-SWIFT_LIBS_PATH = -L$(SWIFT_PATH)/linux
-SWIFT_LIBS = -lswiftSwiftOnoneSupport -lswiftCore -lFoundation -lswiftGlibc -lswiftDispatch \
-             -ldispatch -lBlocksRuntime -licui18nswift -licuucswift -licudataswift
+include ../Makefile.config
+
 TARGET = ex03_inGLFWindow
 all: $(TARGET)
 	LD_LIBRARY_PATH=$(SWIFT_PATH)/linux ./$(TARGET)
