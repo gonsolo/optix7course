@@ -45,7 +45,7 @@ extension Array {
         }
 }
 
-final class Triangle<VertexIndex: BinaryInteger> {
+final class Triangle<VertexIndex: BinaryInteger>: Shape {
 
         init(
                 mesh: TriangleMesh<VertexIndex, Point, Normal, Vector2F>,
@@ -63,6 +63,7 @@ final class Triangle<VertexIndex: BinaryInteger> {
                         throw TriangleError.index
                 }
         }
+
 /*
         static func formatHuman(_ number: Int) -> String {
                 if number > 1024 * 1024 {
@@ -371,6 +372,7 @@ func createTriangleMesh<Index: BinaryInteger>(
         uvs: [Vector2F],
         faceIndices: [Index]
 ) throws -> [Triangle<Index>] {
+//) throws -> [Shape] {
         let numberTriangles = indices.count / 3
         let trianglePoints = points
         let triangleNormals = normals

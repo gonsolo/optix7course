@@ -6,7 +6,7 @@
 #include <fstream>
 #include <iostream>
 
-extern "C" void bla(
+extern "C" void accelBuild(
         unsigned int numIndices,
         uint32_t* indices,
         unsigned int numVertices,
@@ -155,12 +155,14 @@ uint3 optixGetLaunchIndex() {
         index.z = 0;
         return index;
 }
+
 OptixResult optixAccelComputeMemoryUsage(
         OptixDeviceContext context,
         const OptixAccelBuildOptions *accelOptions,
         const OptixBuildInput *buildInputs,
         unsigned int numBuildInputs,
         OptixAccelBufferSizes * bufferSizes) { return OPTIX_SUCCESS; }
+
 OptixResult optixAccelBuild(
         OptixDeviceContext context,
 	CUstream stream,
@@ -177,22 +179,11 @@ OptixResult optixAccelBuild(
 
         auto& triangleArray = buildInputs->triangleArray;
         auto indices = (uint32_t*)triangleArray.indexBuffer;
-        //std::cout << "gonzo number of index triplets: " << buildInputs->triangleArray.numIndexTriplets << std::endl;
         auto numIndices = triangleArray.numIndexTriplets * 3;
-        //for (int i = 0; i < numIndices; i++) {
-        //        std::cout << ((int*)buildInputs->triangleArray.indexBuffer)[i] << " ";
-        //}
-        //std::cout << std::endl;
         auto numVertices = triangleArray.numVertices;
-        //std::cout << "gonzo number of vertices: " << numVertices << std::endl;
-        //for (int i = 0; i < numVertices; i++) {
-        //        std::cout << ((float*)buildInputs->triangleArray.vertexBuffers[0])[i] << " ";
-        //}
-        //std::cout << std::endl;
         auto vertices = (float*)triangleArray.vertexBuffers[0];
 
-        std::cout << "gonzo c++ numIndices: " << numIndices << ", index: " << indices[0] << std::endl;
-        bla(numIndices, indices, numVertices, vertices);
+        accelBuild(numIndices, indices, numVertices, vertices);
 
         return OPTIX_SUCCESS;
 }
@@ -204,7 +195,9 @@ OptixResult optixAccelCompact(
 	CUdeviceptr  	outputBuffer,
 	size_t  	outputBufferSizeInBytes,
 	OptixTraversableHandle *  	outputHandle) { return OPTIX_SUCCESS; }
+
 extern "C" {
+
 void optixTrace(
         OptixTraversableHandle  	handle,
 	float3  	rayOrigin,
@@ -218,5 +211,8 @@ void optixTrace(
 	unsigned int  	SBTstride,
 	unsigned int  	missSBTIndex,
 	unsigned int &  	p0,
-	unsigned int &  	p1) {}
+	unsigned int &  	p1) {
+
+        //std::cout << "optixTrace" << std::endl;
+}
 }
