@@ -1,6 +1,6 @@
 include ../Makefile.config
 
-TARGET = ex04_firstSBTData
+TARGET = ex05_firstSBTData
 all: $(TARGET)
 	LD_LIBRARY_PATH=$(SWIFT_PATH)/linux:../gonzo ./$(TARGET)
 $(TARGET): main.cpp SampleRenderer.cpp ../common/glfWindow/GLFWindow.cpp
