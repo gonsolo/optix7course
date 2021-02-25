@@ -4,7 +4,7 @@ SWIFT_OBJ = $(SWIFT_SOURCE:.swift=*.o)
 all: libGonzo.a
 libGonzo.a: gonzo.o gonzales.o
 	ar r $@ $^
-gonzo.o: gonzo.cpp
+gonzo.o: gonzo.cpp gonzo.h
 	clang++ -O2 -fpic -I../common/gdt -c $<
 gonzales.o: $(SWIFT_SOURCE)
 	swiftc -O -whole-module-optimization -emit-object -module-name Gonzales $^ -o $@

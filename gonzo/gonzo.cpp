@@ -1,5 +1,5 @@
 #include "gonzo.h"
-#include "optix_device.h"
+//#include "optix_device.h"
 #include "dlfcn.h"
 #include <cstdlib>
 #include <cstring>
@@ -307,4 +307,22 @@ float3 optixGetWorldRayDirection() {
         direction.z = rayDirZ;        
         return direction;
 }
+
+cudaError_t cudaMallocArray(cudaArray_t*, const cudaChannelFormatDesc*, size_t, size_t, unsigned int flags) {
+        return cudaSuccess;
+}
+
+cudaError_t cudaMemcpy2DToArray(cudaArray_t, size_t, size_t, const void*, size_t, size_t, size_t, cudaMemcpyKind) {
+        return cudaSuccess;
+}
+
+cudaError_t cudaCreateTextureObject(
+                cudaTextureObject_t* pTexObject,
+                const cudaResourceDesc* pResDesc,
+                const cudaTextureDesc* pTexDesc,
+                const cudaResourceViewDesc* pResViewDesc) {
+        return cudaSuccess;
+}
+
+float2 optixGetTriangleBarycentrics() { return float2(); }
 

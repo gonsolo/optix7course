@@ -76,6 +76,9 @@ struct OptixShaderBindingTable {
 #define __align__(alignment)
 #define __forceinline__
 #define __device__
+#define __constant__
+#define __global__
+
 #define OPTIX_SBT_RECORD_HEADER_SIZE   ( (size_t)32 )
 
 void cudaSetDevice(int device);
@@ -269,7 +272,9 @@ OptixResult optixAccelCompact(
 	OptixTraversableHandle *  	outputHandle);
 
 #include "../common/gdt/gdt/math/vec.h"
+typedef gdt::vec_t<float, 4> float4;
 typedef gdt::vec_t<float, 3> float3;
+typedef gdt::vec_t<float, 2> float2;
 
 extern "C" {
 unsigned int optixGetPayload_0();
@@ -301,3 +306,78 @@ void optixTrace(
 	unsigned int &  	p0,
 	unsigned int &  	p1);
 }
+
+typedef unsigned long long cudaTextureObject_t;
+struct cudaArray {};
+typedef cudaArray* cudaArray_t;
+enum cudaResourceType {
+        cudaResourceTypeArray = 0x00
+};
+struct cudaResourceDesc {
+        cudaResourceType resType;
+        union {
+                struct {
+                        cudaArray_t array;
+                } array;
+        } res;
+};
+struct cudaChannelFormatDesc {};
+enum cudaTextureAddressMode {
+        cudaAddressModeWrap = 0
+};
+enum cudaTextureFilterMode {
+        cudaFilterModePoint = 0,
+        cudaFilterModeLinear = 1
+};
+enum cudaTextureReadMode {
+        cudaReadModeNormalizedFloat = 1
+};
+
+struct cudaTextureDesc {
+       cudaTextureAddressMode addressMode[3]; 
+       cudaTextureFilterMode filterMode;
+       cudaTextureReadMode readMode;
+       int normalizedCoords;
+       unsigned int maxAnisotropy;
+       float minMipmapLevelClamp;
+       float maxMipmapLevelClamp;
+       cudaTextureFilterMode mipmapFilterMode;
+       float borderColor[4];
+       int sRGB;
+};
+
+struct cudaResourceViewDesc {};
+
+cudaError_t cudaCreateTextureObject(
+                cudaTextureObject_t* pTexObject,
+                const cudaResourceDesc* pResDesc,
+                const cudaTextureDesc* pTexDesc,
+                const cudaResourceViewDesc* pResViewDesc);
+
+template<typename T>
+cudaChannelFormatDesc cudaCreateChannelDesc() {
+        return cudaChannelFormatDesc();
+}
+typedef unsigned char uchar;
+typedef uchar uchar4[4];
+cudaError_t cudaMallocArray(cudaArray_t*, const cudaChannelFormatDesc*, size_t, size_t, unsigned int flags = 0);
+cudaError_t cudaMemcpy2DToArray(cudaArray_t, size_t, size_t, const void*, size_t, size_t, size_t, cudaMemcpyKind);
+
+float2 optixGetTriangleBarycentrics();
+
+//struct sampler2D {};
+template<typename T>
+float4 tex2D(cudaTextureObject_t, float x, float y) {
+        return float4();
+}
+
+
+struct uint3 {
+        uint x;
+        uint y;
+        uint z;
+};
+
+
+uint3 optixGetLaunchIndex();
+
