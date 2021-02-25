@@ -268,18 +268,22 @@ OptixResult optixAccelCompact(
 	size_t  	outputBufferSizeInBytes,
 	OptixTraversableHandle *  	outputHandle);
 
+#include "../common/gdt/gdt/math/vec.h"
+typedef gdt::vec_t<float, 3> float3;
+
 extern "C" {
 unsigned int optixGetPayload_0();
 unsigned int optixGetPayload_1();
 unsigned int optixGetPrimitiveIndex();
+CUdeviceptr optixGetSbtDataPointer();
 }
+
+float3 optixGetWorldRayDirection();
+
 typedef unsigned int OptixVisibilityMask;
 enum OptixRayFlags {
         OPTIX_RAY_FLAG_DISABLE_ANYHIT = 1u << 0
 };
-
-#include "../common/gdt/gdt/math/vec.h"
-typedef const gdt::vec_t<float, 3> float3;
 
 extern "C" {
 void optixTrace(

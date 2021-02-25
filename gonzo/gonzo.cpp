@@ -100,6 +100,8 @@ void* launch;
 int x;
 int y;
 
+const OptixShaderBindingTable* shaderBindingTable;
+
 OptixResult optixLaunch(
         OptixPipeline  	pipeline,
         CUstream  	stream,
@@ -111,7 +113,7 @@ OptixResult optixLaunch(
         unsigned int  	depth) {
 
         memcpy(launch, pipelineParams, pipelineParamsSize);
-
+        shaderBindingTable = sbt;
         for(y = 0; y < height; y++) {
                 for(x = 0; x < width; x++) {
                         raygen();
@@ -273,4 +275,19 @@ unsigned int optixGetPayload_1() {
         return payload1;
 }
 
+CUdeviceptr optixGetSbtDataPointer() {
+        char* base = (char*)shaderBindingTable->hitgroupRecordBase;
+        CUdeviceptr data = base + OPTIX_SBT_RECORD_HEADER_SIZE;
+        return data; 
 }
+
+} // extern "C"
+
+float3 optixGetWorldRayDirection() {
+        float3 direction;
+        direction.x = 0;        
+        direction.y = 0;        
+        direction.z = 0;        
+        return direction;
+}
+

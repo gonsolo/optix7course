@@ -72,6 +72,7 @@ namespace osc {
     // compute normal:
     const int   primID = optixGetPrimitiveIndex();
     const vec3i index  = sbtData.index[primID];
+    //std::cout << primID << " " << index << std::endl;
     const vec3f &A     = sbtData.vertex[index.x];
     const vec3f &B     = sbtData.vertex[index.y];
     const vec3f &C     = sbtData.vertex[index.z];

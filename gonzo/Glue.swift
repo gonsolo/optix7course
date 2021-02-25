@@ -52,7 +52,7 @@ func trace(
                         result.pointee = 0
                         return
                 }
-                result.pointee = Int(triangle.idx)
+                result.pointee = Int(triangle.idx) / 3
         } catch {
                 print("Error trace!")
         }
