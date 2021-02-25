@@ -267,7 +267,7 @@ void optixTrace(
         payload0 = p0;
         payload1 = p1;
 
-        if (*pointer == 0) {
+        if (*pointer == -1) {
                 miss();                
         } else {
                 primitiveIndex = *pointer;

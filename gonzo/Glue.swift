@@ -43,18 +43,19 @@ func trace(
         ox: Float, oy: Float, oz: Float,
         dx: Float, dy: Float, dz: Float,
         tmax: Float,
-        result: UnsafeMutablePointer<Int>) {
+        result: UnsafeMutablePointer<Int>)
+        {
         let origin = Point(x: ox, y: oy, z: oz)
         let direction = Vector(x: dx, y: dy, z: dz)
         let ray = Ray(origin: origin, direction: direction)
         var tHit: Float = Float.infinity
         do {
                 guard let interaction = try hierarchy.intersect(ray: ray, tHit: &tHit) else {
-                        result.pointee = 0
+                        result.pointee = -1
                         return
                 }
                 guard let triangle = interaction.primitive as? Triangle<UInt32> else {
-                        result.pointee = 0
+                        result.pointee = -1
                         return
                 }
                 result.pointee = Int(triangle.idx) / 3

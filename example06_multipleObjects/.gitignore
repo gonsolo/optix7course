@@ -1,0 +1,5 @@
+devicePrograms.o
+dummy.cpp
+dummy.o
+dummy.so
+ex06_multipleObjects
