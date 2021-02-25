@@ -8,6 +8,7 @@
 
 extern "C" {
 void addTriangles(
+        int numInput,
         unsigned int numIndices,
         uint32_t* indices,
         unsigned int numVertices,
@@ -18,7 +19,8 @@ void accelBuild();
 void trace(float ox, float oy, float oz,
            float dx, float dy, float dz,
            float tmax,
-           int* result);
+           int* result,
+           int* numInput);
 }
 
 void cudaStreamCreate(cudaStream_t* pStream) {}
@@ -207,7 +209,7 @@ OptixResult optixAccelBuild(
                 auto numIndices = triangleArray.numIndexTriplets * 3;
                 auto numVertices = triangleArray.numVertices;
                 auto vertices = (float*)triangleArray.vertexBuffers[0];
-                addTriangles(numIndices, indices, numVertices, vertices);
+                addTriangles(i, numIndices, indices, numVertices, vertices);
         }
         accelBuild();
 
@@ -236,6 +238,7 @@ unsigned int payload1 = 0;
 float rayDirX;
 float rayDirY;
 float rayDirZ;
+int numInput;
 
 extern "C" {
 
@@ -262,7 +265,8 @@ void optixTrace(
         trace(rayOrigin.x, rayOrigin.y, rayOrigin.z,
               rayDirection.x, rayDirection.y, rayDirection.z,
               tmax,
-              pointer);
+              pointer,
+              &numInput);
 
         payload0 = p0;
         payload1 = p1;
@@ -289,7 +293,8 @@ unsigned int optixGetPayload_1() {
 
 CUdeviceptr optixGetSbtDataPointer() {
         char* base = (char*)shaderBindingTable->hitgroupRecordBase;
-        CUdeviceptr data = base + OPTIX_SBT_RECORD_HEADER_SIZE;
+        auto stride = shaderBindingTable->hitgroupRecordStrideInBytes;
+        CUdeviceptr data = base + OPTIX_SBT_RECORD_HEADER_SIZE + numInput * stride;
         return data; 
 }
 

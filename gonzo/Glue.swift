@@ -5,6 +5,7 @@ var hierarchy = BoundingHierarchy()
 
 @_cdecl("addTriangles")
 func addTriangles(
+        inputNum: Int,
         numIndices: UInt,
         indexPointer: UnsafeMutablePointer<UInt32>,
         numVertices: UInt,
@@ -21,6 +22,7 @@ func addTriangles(
         }
         do {
                 let mesh = try createTriangleMesh(
+                        numInput: inputNum,
                         indices: indices,
                         points: points,
                         normals: [],
@@ -43,7 +45,8 @@ func trace(
         ox: Float, oy: Float, oz: Float,
         dx: Float, dy: Float, dz: Float,
         tmax: Float,
-        result: UnsafeMutablePointer<Int>)
+        result: UnsafeMutablePointer<Int>,
+        numInput: UnsafeMutablePointer<Int>)
         {
         let origin = Point(x: ox, y: oy, z: oz)
         let direction = Vector(x: dx, y: dy, z: dz)
@@ -59,6 +62,7 @@ func trace(
                         return
                 }
                 result.pointee = Int(triangle.idx) / 3
+                numInput.pointee = triangle.mesh.numInput
         } catch {
                 print("Error trace!")
         }

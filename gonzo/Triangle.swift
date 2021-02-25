@@ -8,6 +8,7 @@ var worldBoundCalled = 0
 final class TriangleMesh<VertexIndex, Point, Normal, UVVector> {
 
         init(
+                numInput: Int,
                 numberTriangles: Int,
                 vertexIndices: [VertexIndex],
                 points: [Point],
@@ -15,6 +16,7 @@ final class TriangleMesh<VertexIndex, Point, Normal, UVVector> {
                 uvs: [UVVector],
                 faceIndices: [VertexIndex]
         ) {
+                self.numInput = numInput
                 self.vertexIndices = vertexIndices
                 self.numberTriangles = numberTriangles
                 self.points = points
@@ -23,6 +25,7 @@ final class TriangleMesh<VertexIndex, Point, Normal, UVVector> {
                 self.faceIndices = faceIndices
         }
 
+        let numInput: Int
         let vertexIndices: [VertexIndex]
         let numberTriangles: Int
         let points: [Point]
@@ -252,7 +255,6 @@ final class Triangle<VertexIndex: BinaryInteger>: Shape {
                         dpdu: dpdu,
                         uv: uvHit,
                         faceIndex: Int(faceIndex),
-
                         primitive: self
                         )
                 let worldInteraction = localInteraction
@@ -369,6 +371,7 @@ func createTriangleMeshShape(
 }
 */
 func createTriangleMesh<Index: BinaryInteger>(
+        numInput: Int,
         indices: [Index],
         points: [Point],
         normals: [Normal],
@@ -382,6 +385,7 @@ func createTriangleMesh<Index: BinaryInteger>(
         var triangles = [Triangle<Index>]()
 
         let mesh = TriangleMesh<Index, Point, Normal, Vector2F>(
+                numInput: numInput,
                 numberTriangles: numberTriangles,
                 vertexIndices: indices,
                 points: trianglePoints,
