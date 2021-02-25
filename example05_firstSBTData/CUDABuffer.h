@@ -16,8 +16,9 @@
 
 #pragma once
 
-#include "optix7.h"
+//#include "optix7.h"
 // common std stuff
+#include "gonzo.h"
 #include <vector>
 #include <assert.h>
 

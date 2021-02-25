@@ -1,6 +1,7 @@
 final class BoundingHierarchyBuilder {
 
-        init(primitives: [Boundable]) {
+        //init(primitives: [Boundable]) {
+        init(primitives: [Triangle<UInt32>]) {
                 self.nodes = []
                 self.cachedPrimitives = primitives.enumerated().map { index, primitive in
                         let bound = primitive.worldBound()
@@ -20,7 +21,7 @@ final class BoundingHierarchyBuilder {
                 BoundingHierarchyBuilder.bhPrimitives += cachedPrimitives.count
                 BoundingHierarchyBuilder.bhNodes += nodes.count
                 let sortedPrimitives = cachedPrimitives.map {
-                        primitives[$0.0] as! AnyObject & Intersectable
+                        primitives[$0.0]
                 }
                 return BoundingHierarchy(primitives: sortedPrimitives, nodes: nodes)
         }
@@ -125,7 +126,7 @@ final class BoundingHierarchyBuilder {
         var totalNodes = 0
         var offsetCounter = 0
         var nodes: [Node]
-        //var cachedPrimitives: [(Boundable, Bounds3f, Point)]
         var cachedPrimitives: [(Int, Bounds3f, Point)]
-        var primitives: [Boundable]
+        //var primitives: [Boundable]
+        var primitives: [Triangle<UInt32>]
 }

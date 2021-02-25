@@ -14,7 +14,8 @@ final class BoundingHierarchy: Boundable, Intersectable {
                 nodes = []
         }
 
-        init(primitives: [AnyObject & Intersectable], nodes: [Node]) {
+        //init(primitives: [AnyObject & Intersectable], nodes: [Node]) {
+        init(primitives: [Triangle<UInt32>], nodes: [Node]) {
                 self.primitives = primitives
                 self.nodes = nodes
         }
@@ -71,6 +72,6 @@ final class BoundingHierarchy: Boundable, Intersectable {
                 }
         }
 
-        var primitives: [AnyObject & Intersectable]
+        var primitives: [Triangle<UInt32>]
         var nodes: [Node]
 }
