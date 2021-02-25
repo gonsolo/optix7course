@@ -15,6 +15,7 @@
 // ======================================================================== //
 
 #include "Model.h"
+
 #define TINYOBJLOADER_IMPLEMENTATION
 #include "3rdParty/tiny_obj_loader.h"
 //std
@@ -36,6 +37,8 @@ namespace std {
     return false;
   }
 }
+
+
 
 /*! \namespace osc - Optix Siggraph Course */
 namespace osc {
