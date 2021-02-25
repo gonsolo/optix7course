@@ -1,14 +1,14 @@
 import Foundation
 
+var triangles = [Triangle<UInt32>]()
 var hierarchy = BoundingHierarchy()
 
-@_cdecl("accelBuild")
-func accelBuild(
+@_cdecl("addTriangles")
+func addTriangles(
         numIndices: UInt,
         indexPointer: UnsafeMutablePointer<UInt32>,
         numVertices: UInt,
         vertexPointer: UnsafeMutablePointer<Float>) {
-        //print("gonzo swift numIndices: \(numIndices), index: \(indexPointer[0])")
         var indices = [UInt32]()
         for i in 0..<Int(numIndices) {
                 indices.append(indexPointer[i])
@@ -20,17 +20,22 @@ func accelBuild(
                 points.append(point)
         }
         do {
-                let triangles = try createTriangleMesh(
+                let mesh = try createTriangleMesh(
                         indices: indices,
                         points: points,
                         normals: [],
                         uvs: [],
                         faceIndices: [])
-                let builder = BoundingHierarchyBuilder(primitives: triangles)
-                hierarchy = builder.getBoundingHierarchy()
+                triangles.append(contentsOf: mesh)
         } catch {
                 print("Error accelBuild!")
         }
+}
+
+@_cdecl("accelBuild")
+func accelBuild() {
+        let builder = BoundingHierarchyBuilder(primitives: triangles)
+        hierarchy = builder.getBoundingHierarchy()
 }
 
 @_cdecl("trace")

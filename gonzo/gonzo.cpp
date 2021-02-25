@@ -7,11 +7,13 @@
 #include <iostream>
 
 extern "C" {
-void accelBuild(
+void addTriangles(
         unsigned int numIndices,
         uint32_t* indices,
         unsigned int numVertices,
         float* vertices);
+
+void accelBuild();
 
 void trace(float ox, float oy, float oz,
            float dx, float dy, float dz,
@@ -198,13 +200,16 @@ OptixResult optixAccelBuild(
 	const OptixAccelEmitDesc * emittedProperties,
 	unsigned int  	numEmittedProperties) {
 
-        auto& triangleArray = buildInputs->triangleArray;
-        auto indices = (uint32_t*)triangleArray.indexBuffer;
-        auto numIndices = triangleArray.numIndexTriplets * 3;
-        auto numVertices = triangleArray.numVertices;
-        auto vertices = (float*)triangleArray.vertexBuffers[0];
-
-        accelBuild(numIndices, indices, numVertices, vertices);
+        for (int i = 0; i < numBuildInputs; i++) {
+                auto buildInput = buildInputs[i];
+                auto& triangleArray = buildInput.triangleArray;
+                auto indices = (uint32_t*)triangleArray.indexBuffer;
+                auto numIndices = triangleArray.numIndexTriplets * 3;
+                auto numVertices = triangleArray.numVertices;
+                auto vertices = (float*)triangleArray.vertexBuffers[0];
+                addTriangles(numIndices, indices, numVertices, vertices);
+        }
+        accelBuild();
 
         return OPTIX_SUCCESS;
 }
