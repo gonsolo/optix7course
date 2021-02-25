@@ -228,6 +228,9 @@ int counter = 0;
 int primitiveIndex = 0;
 unsigned int payload0 = 0;
 unsigned int payload1 = 0;
+float rayDirX;
+float rayDirY;
+float rayDirZ;
 
 extern "C" {
 
@@ -247,6 +250,10 @@ void optixTrace(
 	unsigned int &  	p1) {
 
         int* pointer = (int*)unpackPointer(p0, p1);
+        rayDirX = rayDirection.x;
+        rayDirY = rayDirection.y;
+        rayDirZ = rayDirection.z;
+
         trace(rayOrigin.x, rayOrigin.y, rayOrigin.z,
               rayDirection.x, rayDirection.y, rayDirection.z,
               tmax,
@@ -285,9 +292,9 @@ CUdeviceptr optixGetSbtDataPointer() {
 
 float3 optixGetWorldRayDirection() {
         float3 direction;
-        direction.x = 0;        
-        direction.y = 0;        
-        direction.z = 0;        
+        direction.x = rayDirX;        
+        direction.y = rayDirY;        
+        direction.z = rayDirZ;        
         return direction;
 }
 
