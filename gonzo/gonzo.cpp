@@ -20,7 +20,9 @@ void trace(float ox, float oy, float oz,
            float dx, float dy, float dz,
            float tmax,
            int* result,
-           int* numInput);
+           int* numInput,
+           float* ux,
+           float* uy);
 }
 
 void cudaStreamCreate(cudaStream_t* pStream) {}
@@ -119,6 +121,7 @@ OptixResult optixLaunch(
         memcpy(launch, pipelineParams, pipelineParamsSize);
         shaderBindingTable = sbt;
         for(y = 0; y < height; y++) {
+                //std::cout << y << " " << height << std::endl;
                 for(x = 0; x < width; x++) {
                         raygen();
                 }
@@ -239,6 +242,7 @@ float rayDirX;
 float rayDirY;
 float rayDirZ;
 int numInput;
+float ux, uy;
 
 extern "C" {
 
@@ -266,7 +270,8 @@ void optixTrace(
               rayDirection.x, rayDirection.y, rayDirection.z,
               tmax,
               pointer,
-              &numInput);
+              &numInput,
+              &ux, &uy);
 
         payload0 = p0;
         payload1 = p1;
@@ -308,11 +313,23 @@ float3 optixGetWorldRayDirection() {
         return direction;
 }
 
-cudaError_t cudaMallocArray(cudaArray_t*, const cudaChannelFormatDesc*, size_t, size_t, unsigned int flags) {
+cudaError_t cudaMallocArray(cudaArray_t* ptr, const cudaChannelFormatDesc*, size_t width, size_t height, unsigned int flags) {
+        size_t size = width * height * 4 * sizeof(uint8_t);
+        auto cap = new cudaArray;
+        if (!cap) return cudaErrorUnknown;
+        cap->data = malloc(size);
+        cap->width = width;
+        cap->height = height;
+        *ptr = cap;
         return cudaSuccess;
 }
 
-cudaError_t cudaMemcpy2DToArray(cudaArray_t, size_t, size_t, const void*, size_t, size_t, size_t, cudaMemcpyKind) {
+cudaError_t cudaMemcpy2DToArray(
+                cudaArray_t dst, size_t wOffset, size_t hOffset, const void* src,
+                size_t spitch, size_t width , size_t height, cudaMemcpyKind kind) {
+
+        size_t count = spitch * height;
+        memcpy(dst->data, src, count);
         return cudaSuccess;
 }
 
@@ -321,8 +338,15 @@ cudaError_t cudaCreateTextureObject(
                 const cudaResourceDesc* pResDesc,
                 const cudaTextureDesc* pTexDesc,
                 const cudaResourceViewDesc* pResViewDesc) {
+        
+        *pTexObject = (cudaTextureObject_t)pResDesc->res.array.array;
         return cudaSuccess;
 }
 
-float2 optixGetTriangleBarycentrics() { return float2(); }
+float2 optixGetTriangleBarycentrics() {
+        float2 uv;
+        uv.x = ux;
+        uv.y = uy;
+        return uv;
+}
 

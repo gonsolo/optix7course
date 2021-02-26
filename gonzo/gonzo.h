@@ -308,7 +308,11 @@ void optixTrace(
 }
 
 typedef unsigned long long cudaTextureObject_t;
-struct cudaArray {};
+struct cudaArray {
+        void* data;
+        int width;
+        int height;
+};
 typedef cudaArray* cudaArray_t;
 enum cudaResourceType {
         cudaResourceTypeArray = 0x00
@@ -365,12 +369,19 @@ cudaError_t cudaMemcpy2DToArray(cudaArray_t, size_t, size_t, const void*, size_t
 
 float2 optixGetTriangleBarycentrics();
 
-//struct sampler2D {};
 template<typename T>
-float4 tex2D(cudaTextureObject_t, float x, float y) {
-        return float4();
+float4 tex2D(cudaTextureObject_t to, float x, float y) {
+        float4 rgba;
+        int components = 4;
+        cudaArray_t ptr = (cudaArray_t)to;
+        size_t index = components * ptr->width * y + components * x;
+        uint8_t* rgbPointer = (uint8_t*)ptr->data;
+        rgba.x = rgbPointer[index+0];
+        rgba.y = rgbPointer[index+1];
+        rgba.z = rgbPointer[index+2];
+        rgba.w = 1;
+        return rgba;
 }
-
 
 struct uint3 {
         uint x;

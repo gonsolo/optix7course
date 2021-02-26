@@ -46,8 +46,10 @@ func trace(
         dx: Float, dy: Float, dz: Float,
         tmax: Float,
         result: UnsafeMutablePointer<Int>,
-        numInput: UnsafeMutablePointer<Int>)
-        {
+        numInput: UnsafeMutablePointer<Int>,
+        ux: UnsafeMutablePointer<Float>,
+        uy: UnsafeMutablePointer<Float>
+        ) {
         let origin = Point(x: ox, y: oy, z: oz)
         let direction = Vector(x: dx, y: dy, z: dz)
         let ray = Ray(origin: origin, direction: direction)
@@ -63,6 +65,8 @@ func trace(
                 }
                 result.pointee = Int(triangle.idx) / 3
                 numInput.pointee = triangle.mesh.numInput
+                ux.pointee = interaction.uv.x
+                uy.pointee = interaction.uv.y
         } catch {
                 print("Error trace!")
         }
