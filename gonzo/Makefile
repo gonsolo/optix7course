@@ -7,7 +7,7 @@ libGonzo.a: gonzo.o gonzales.o
 gonzo.o: gonzo.cpp gonzo.h
 	clang++ -O2 -fpic -I../common/gdt -c $<
 gonzales.o: $(SWIFT_SOURCE)
-	swiftc -O -whole-module-optimization -emit-object -module-name Gonzales $^ -o $@
+	swiftc -Ounchecked -whole-module-optimization -emit-object -module-name Gonzales $^ -o $@
 c: clean
 clean:
 	rm -f gonzales.o gonzales.bc gonzo.o libGonzo.a libGonzo.so libGonzales.so
