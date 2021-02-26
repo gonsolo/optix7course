@@ -5,6 +5,5 @@ SUBDIRS = gonzo example01_helloOptix example02_pipelineAndRayGen example03_inGLF
 .PHONY: all clean
 
 all clean:
-	@echo  $$(ls /usr/local/lib)
-	@#for dir in $(SUBDIRS); do echo "Building $$dir"; $(MAKE) -s -C $$dir -f Makefile $@; done
+	@for dir in $(SUBDIRS); do echo "$@ $$dir"; $(MAKE) -s -C $$dir -f Makefile $@; done
 
