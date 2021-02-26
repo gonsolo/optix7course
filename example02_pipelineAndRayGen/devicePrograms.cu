@@ -14,8 +14,8 @@
 // limitations under the License.                                           //
 // ======================================================================== //
 
-#include "optix_device.h"
-
+//#include "optix_device.h"
+#include "gonzo.h"
 #include "LaunchParams.h"
 
 using namespace osc;
