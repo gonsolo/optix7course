@@ -2,9 +2,10 @@ include ../Makefile.config
 
 TARGET = ex07_firstRealModel
 all: $(TARGET)
-	LD_LIBRARY_PATH=$(SWIFT_PATH)/linux:../gonzo ./$(TARGET)
 $(TARGET): main.cpp SampleRenderer.cpp Model.cpp ../common/glfWindow/GLFWindow.cpp
 	g++ -O2 -g -rdynamic -I../common -I../gonzo -I../common/gdt -o $@ $^ ../gonzo/libGonzo.a -ldl -lglfw -lOpenGL $(SWIFT_LIBS)
+run: $(TARGET)
+	LD_LIBRARY_PATH=$(SWIFT_PATH)/linux:../gonzo ./$(TARGET)
 c: clean
 clean:
 	rm -f $(TARGET) devicePrograms.bc devicePrograms.o
