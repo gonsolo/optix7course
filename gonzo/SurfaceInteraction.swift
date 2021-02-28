@@ -8,6 +8,7 @@ struct SurfaceInteraction: Interaction {
                 dpdu: Vector = Vector(),
                 uv: Point2F = Point2F(),
                 faceIndex: Int = 0,
+                barycentric: Point = Point(),
                 primitive: (Boundable & Intersectable)? = nil
         ) {
 
@@ -18,6 +19,7 @@ struct SurfaceInteraction: Interaction {
                 self.dpdu = dpdu
                 self.uv = uv
                 self.faceIndex = faceIndex
+                self.barycentric = barycentric
                 self.primitive = primitive
         }
 
@@ -29,6 +31,7 @@ struct SurfaceInteraction: Interaction {
                 self.dpdu = other.dpdu
                 self.uv = other.uv
                 self.faceIndex = other.faceIndex
+                self.barycentric = other.barycentric
                 self.primitive = other.primitive
         }
 
@@ -40,6 +43,7 @@ struct SurfaceInteraction: Interaction {
         var uv: Point2F
         var faceIndex: Int
 
+        var barycentric: Point
         var primitive: (Boundable & Intersectable)?
 }
 

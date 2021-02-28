@@ -255,6 +255,7 @@ final class Triangle<VertexIndex: BinaryInteger>: Shape {
                         dpdu: dpdu,
                         uv: uvHit,
                         faceIndex: Int(faceIndex),
+                        barycentric: Point(x: b0, y: b1, z: b2),
                         primitive: self
                         )
                 let worldInteraction = localInteraction
