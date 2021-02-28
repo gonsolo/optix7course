@@ -374,11 +374,15 @@ float4 tex2D(cudaTextureObject_t to, float x, float y) {
         float4 rgba;
         int components = 4;
         cudaArray_t ptr = (cudaArray_t)to;
-        size_t index = components * ptr->width * y + components * x;
+        int ix = x * ptr->width;
+        int iy = y * ptr->height;
+        ix %= ptr->width;
+        iy %= ptr->height;
+        size_t index = components * ptr->width * iy + components * ix;
         uint8_t* rgbPointer = (uint8_t*)ptr->data;
-        rgba.x = rgbPointer[index+0];
-        rgba.y = rgbPointer[index+1];
-        rgba.z = rgbPointer[index+2];
+        rgba.x = rgbPointer[index+0] / 255.f;
+        rgba.y = rgbPointer[index+1] / 255.f;
+        rgba.z = rgbPointer[index+2] / 255.f;
         rgba.w = 1;
         return rgba;
 }
