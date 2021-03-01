@@ -280,7 +280,9 @@ void optixTrace(
                 miss();                
         } else {
                 primitiveIndex = *pointer;
-                closest();
+                bool disable_closesthit = rayFlags & OPTIX_RAY_FLAG_DISABLE_CLOSESTHIT;
+                if (!disable_closesthit)
+                        closest();
         }
 }
 
