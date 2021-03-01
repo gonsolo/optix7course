@@ -1,4 +1,4 @@
-#include "gonzo.h"
+#include "softoptix.h"
 //#include "optix_device.h"
 #include "dlfcn.h"
 #include <cstdlib>
@@ -146,7 +146,7 @@ OptixResult optixPipelineCreate(
         dummy << "char " << pipelineCompileOptions->pipelineLaunchParamsVariableName << "[256];" << std::endl;
         dummy.close();
         std::system("clang++ -g -fpic -c dummy.cpp");
-        std::system("clang -g -fpic -xc++ -I ../gonzo/ -I ../common/gdt -I ../gonzo/optix_device.h  -c devicePrograms.cu");
+        std::system("clang -g -fpic -xc++ -I../softoptix/ -I../common/gdt -c devicePrograms.cu");
         std::system("clang++ -g -fpic -shared -o dummy.so dummy.o devicePrograms.o");
 
         void* handle = dlopen("./dummy.so", RTLD_LAZY);

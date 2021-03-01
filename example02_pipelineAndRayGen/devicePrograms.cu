@@ -15,7 +15,7 @@
 // ======================================================================== //
 
 //#include "optix_device.h"
-#include "gonzo.h"
+#include "softoptix.h"
 #include "LaunchParams.h"
 
 using namespace osc;
