@@ -72,18 +72,13 @@ This is how it looks on my Linux machine:
 
 ## Example 5: First Shader Binding Table (SBT) Data 
 
-![Example 4](./example05_firstSBTData/example.05.png)
+![Example 5](./example05_firstSBTData/example.05.png)
 
-<!--
 ## Example 6: Multiple Triangle Meshes 
 
-This example introduces the concept of having multiple different
-meshes (each with their own programs and SBT data) into the same accel
-structure. Whereas the previous example used two (same color) cubes in
-*one* triangle mesh, this example split this test scene into two
-meshes with one cube (and one color) each.
+![Example 6](./example06_multipleObjects/example.06.png)
 
-![Multiple Triangle Meshes](./example06_multipleObjects/ex06.png)
+<!--
 
 ## Example 7: First Real Model
 
