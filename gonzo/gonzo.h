@@ -287,7 +287,9 @@ float3 optixGetWorldRayDirection();
 
 typedef unsigned int OptixVisibilityMask;
 enum OptixRayFlags {
-        OPTIX_RAY_FLAG_DISABLE_ANYHIT = 1u << 0
+        OPTIX_RAY_FLAG_DISABLE_ANYHIT = 1u << 0,
+        OPTIX_RAY_FLAG_TERMINATE_ON_FIRST_HIT = 1u << 2,
+        OPTIX_RAY_FLAG_DISABLE_CLOSESTHIT = 1u << 3
 };
 
 extern "C" {

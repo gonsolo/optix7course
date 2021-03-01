@@ -65,8 +65,8 @@ func trace(
                 }
                 result.pointee = Int(triangle.idx) / 3
                 numInput.pointee = triangle.mesh.numInput
-                ux.pointee = interaction.barycentric.x
-                uy.pointee = interaction.barycentric.y
+                ux.pointee = interaction.barycentric.y
+                uy.pointee = interaction.barycentric.z
         } catch {
                 print("Error trace!")
         }
