@@ -3,6 +3,7 @@ include ../Makefile.config
 TARGET = ex08_addingTextures
 all: $(TARGET)
 $(TARGET): main.cpp SampleRenderer.cpp Model.cpp ../common/glfWindow/GLFWindow.cpp
+	$(MAKE) -C ../gonzo
 	g++ -O2 -g -rdynamic -I../common -I../gonzo -I../common/gdt -o $@ $^ ../gonzo/libGonzo.a -ldl -lglfw -lOpenGL $(SWIFT_LIBS)
 run: $(TARGET)
 	LD_LIBRARY_PATH=$(SWIFT_PATH)/linux:../gonzo ./$(TARGET)

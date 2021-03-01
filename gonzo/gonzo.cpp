@@ -89,7 +89,8 @@ OptixResult optixProgramGroupCreate(
 
 void (*raygen)();
 void (*closest)();
-void (*miss)();
+void (*miss_radiance)();
+void (*miss_shadow)();
 
 OptixResult optixPipelineSetStackSize(
         OptixPipeline  	pipeline,
@@ -163,10 +164,15 @@ OptixResult optixPipelineCreate(
                 std::cerr << "no closest!" << std::endl;
                 exit(EXIT_FAILURE);
         }
-        *(void**)(&miss) = dlsym(handle, "__miss__radiance");
-        if (!miss) {
-                std::cerr << "no miss!" << std::endl;
+        *(void**)(&miss_radiance) = dlsym(handle, "__miss__radiance");
+        if (!miss_radiance) {
+                std::cerr << "no miss_radiance!" << std::endl;
                 exit(EXIT_FAILURE);
+        }
+        *(void**)(&miss_shadow) = dlsym(handle, "__miss__shadow");
+        if (!miss_shadow) {
+                //std::cerr << "No miss_shadow!" << std::endl;
+                //exit(EXIT_FAILURE);
         }
         launch = dlsym(handle, pipelineCompileOptions->pipelineLaunchParamsVariableName);
         return OPTIX_SUCCESS;
@@ -278,7 +284,7 @@ void optixTrace(
         payload1 = p1;
 
         if (result == -1) {
-                miss();                
+                miss_radiance();
         } else {
                 primitiveIndex = result;
                 bool disable_closesthit = rayFlags & OPTIX_RAY_FLAG_DISABLE_CLOSESTHIT;
@@ -302,7 +308,8 @@ unsigned int optixGetPayload_1() {
 CUdeviceptr optixGetSbtDataPointer() {
         char* base = (char*)shaderBindingTable->hitgroupRecordBase;
         auto stride = shaderBindingTable->hitgroupRecordStrideInBytes;
-        CUdeviceptr data = base + OPTIX_SBT_RECORD_HEADER_SIZE + numInput * stride;
+        //CUdeviceptr data = base + OPTIX_SBT_RECORD_HEADER_SIZE + numInput * stride;
+        CUdeviceptr data = base + numInput * stride + OPTIX_SBT_RECORD_HEADER_SIZE;
         return data; 
 }
 
