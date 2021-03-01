@@ -16,7 +16,7 @@
 
 #include <optix_device.h>
 //#include <cuda_runtime.h>
-#include "gonzo.h"
+#include "softoptix.h"
 
 #include "LaunchParams.h"
 

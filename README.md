@@ -78,7 +78,6 @@ This is how it looks on my Linux machine:
 
 ![Example 6](./example06_multipleObjects/example.06.png)
 
-
 ## Example 7: First Real Model
 
 ![Example 7](./example07_firstRealModel/example.07.png)
