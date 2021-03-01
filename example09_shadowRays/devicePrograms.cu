@@ -88,6 +88,7 @@ namespace osc {
     const vec3f &A     = sbtData.vertex[index.x];
     const vec3f &B     = sbtData.vertex[index.y];
     const vec3f &C     = sbtData.vertex[index.z];
+    std::cout << "closesthit called, primID: " << primID << std::endl;
     vec3f Ng = cross(B-A,C-A);
     vec3f Ns = (sbtData.normal)
       ? ((1.f-u-v) * sbtData.normal[index.x]
@@ -137,6 +138,7 @@ namespace osc {
     // the values we store the PRD pointer in:
     uint32_t u0, u1;
     packPointer( &lightVisibility, u0, u1 );
+    /*
     optixTrace(optixLaunchParams.traversable,
                surfPos + 1e-3f * Ng,
                lightDir,
@@ -154,6 +156,7 @@ namespace osc {
                RAY_TYPE_COUNT,               // SBT stride
                SHADOW_RAY_TYPE,            // missSBTIndex 
                u0, u1 );
+               */
 
     // ------------------------------------------------------------------
     // final shading: a bit of ambient, a bit of directional ambient,
@@ -183,6 +186,7 @@ namespace osc {
   
   extern "C" __global__ void __miss__radiance()
   {
+    std::cout << "miss radiance called" << std::endl;
     vec3f &prd = *(vec3f*)getPRD<vec3f>();
     // set to constant white as background color
     prd = vec3f(1.f);
@@ -190,6 +194,7 @@ namespace osc {
 
   extern "C" __global__ void __miss__shadow()
   {
+    std::cout << "miss shadow called" << std::endl;
     // we didn't hit anything, so the light is visible
     vec3f &prd = *(vec3f*)getPRD<vec3f>();
     prd = vec3f(1.f);
@@ -224,6 +229,7 @@ namespace osc {
                              + (screen.x - 0.5f) * camera.horizontal
                              + (screen.y - 0.5f) * camera.vertical);
 
+    std::cout << "calling optixTrace from renderFrame" << std::endl;
     optixTrace(optixLaunchParams.traversable,
                camera.position,
                rayDir,

@@ -19,7 +19,7 @@ void accelBuild();
 void trace(float ox, float oy, float oz,
            float dx, float dy, float dz,
            float tmax,
-           int* result,
+           int64_t* result,
            int* numInput,
            float* ux,
            float* uy);
@@ -261,7 +261,8 @@ void optixTrace(
 	unsigned int &  	p0,
 	unsigned int &  	p1) {
 
-        int* pointer = (int*)unpackPointer(p0, p1);
+        int64_t result;
+
         rayDirX = rayDirection.x;
         rayDirY = rayDirection.y;
         rayDirZ = rayDirection.z;
@@ -269,17 +270,17 @@ void optixTrace(
         trace(rayOrigin.x, rayOrigin.y, rayOrigin.z,
               rayDirection.x, rayDirection.y, rayDirection.z,
               tmax,
-              pointer,
+              &result,
               &numInput,
               &ux, &uy);
 
         payload0 = p0;
         payload1 = p1;
 
-        if (*pointer == -1) {
+        if (result == -1) {
                 miss();                
         } else {
-                primitiveIndex = *pointer;
+                primitiveIndex = result;
                 bool disable_closesthit = rayFlags & OPTIX_RAY_FLAG_DISABLE_CLOSESTHIT;
                 if (!disable_closesthit)
                         closest();

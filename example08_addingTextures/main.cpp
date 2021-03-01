@@ -121,6 +121,7 @@ namespace osc {
 #else
       // on linux, common practice is to have ONE level of build dir
       // (say, <project>/build/)...
+      //"../models/small.obj"
       "../models/sponza.obj"
       //"../models/gonzo.obj"
 #endif
