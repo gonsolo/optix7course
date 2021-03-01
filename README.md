@@ -1,5 +1,7 @@
 # A software implementation of Optix 7
-## Based on: Siggraph 2019/2020 OptiX 7/7.1 Course Tutorial Code
+
+Based on: Siggraph 2019/2020 OptiX 7/7.1 Course Tutorial Code
+
 
 # About this repository  
 
