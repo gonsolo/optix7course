@@ -15,7 +15,8 @@
 // ======================================================================== //
 
 #include <optix_device.h>
-#include <cuda_runtime.h>
+//#include <cuda_runtime.h>
+#include "gonzo.h"
 
 #include "LaunchParams.h"
 
