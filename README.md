@@ -61,18 +61,12 @@ This is how it looks on my Linux machine:
 
 ![Example 2](./example02_pipelineAndRayGen/example.02.png)
 
-<!--
 
 ## Example 3: Rendering in a GLFW Window 
 
-Rendering to files is nice and well, but *probably* you want to
-eventually do some online rendering; so this example moves the
-previous raygen example into a 3D viewer window (created and run using
-GLFW). For now this viewer just displays the rendered images, with no
-user interaction.
+![Example 3](./example03_inGLFWindow/example.03.png)
 
-![Same Raygen example, in GLFL Window (Linux)](./example03_inGLFWindow/ex03-linux.png)
-![Same Raygen example, in GLFL Window (Windows)](./example03_inGLFWindow/ex03-windows.png)
+<!--
 
 ## Example 4: Creating a first Triangle Mesh and Accel Struct 
 
