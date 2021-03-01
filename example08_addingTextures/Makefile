@@ -3,10 +3,10 @@ include ../Makefile.config
 TARGET = ex08_addingTextures
 all: $(TARGET)
 $(TARGET): main.cpp SampleRenderer.cpp Model.cpp ../common/glfWindow/GLFWindow.cpp
-	$(MAKE) -C ../gonzo
-	g++ -O2 -g -rdynamic -I../common -I../gonzo -I../common/gdt -o $@ $^ ../gonzo/libGonzo.a -ldl -lglfw -lOpenGL $(SWIFT_LIBS)
+	$(MAKE) -C ../softoptix
+	g++ -O2 -g -rdynamic -I../common -I../softoptix -I../common/gdt -o $@ $^ ../softoptix/libSoftOptix.a -ldl -lglfw -lOpenGL $(SWIFT_LIBS)
 run: $(TARGET)
-	LD_LIBRARY_PATH=$(SWIFT_PATH)/linux:../gonzo ./$(TARGET)
+	LD_LIBRARY_PATH=$(SWIFT_PATH)/linux:../softoptix ./$(TARGET)
 c: clean
 clean:
 	rm -f $(TARGET) devicePrograms.bc devicePrograms.o
@@ -14,8 +14,8 @@ clean:
 devicePrograms.o: devicePrograms.bc
 	clang -O2 -c $<
 devicePrograms.bc: devicePrograms.cu
-	clang++ -O2 -emit-llvm -xc++ -std=c++17 -I../gonzo -I ../common/gdt -I ../gonzo/optix_device.h -c devicePrograms.cu
+	clang++ -O2 -emit-llvm -xc++ -std=c++17 -I../softoptix -I ../common/gdt -c devicePrograms.cu
 gdb:
-	LD_LIBRARY_PATH=$(SWIFT_PATH)/linux:../gonzo gdb ./$(TARGET)
+	LD_LIBRARY_PATH=$(SWIFT_PATH)/linux:../softoptix gdb ./$(TARGET)
 perf:
-	LD_LIBRARY_PATH=$(SWIFT_PATH)/linux:../gonzo perf record ./$(TARGET)
+	LD_LIBRARY_PATH=$(SWIFT_PATH)/linux:../softoptix perf record ./$(TARGET)

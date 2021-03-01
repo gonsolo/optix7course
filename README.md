@@ -78,31 +78,16 @@ This is how it looks on my Linux machine:
 
 ![Example 6](./example06_multipleObjects/example.06.png)
 
-<!--
 
 ## Example 7: First Real Model
 
-This example takes the previous "multiple meshes" code unmodified, but
-introduces a simple OBJ file format parser (using [Syoyo Fuyita's
-tinyobj](https://github.com/syoyo/tinyobjloader), and hooks the resulting triangle meshes up to
-the previous example's render code.
-
-For this example, you must download the [Crytek Sponza model](https://casual-effects.com/data/) and unzip it to the (non-existent, until you create it) subdirectory `optix7course/models`.
-
-And la-voila, with exactly the same render code from Sample 6, it
-suddenly starts to take shape:
-
-![First Real Model: Sponza](./example07_firstRealModel/ex07.png)
+![Example 7](./example07_firstRealModel/example.07.png)
 
 ## Example 8: Adding Textures via CUDA Texture Objects
 
-This example shows how to create and set up CUDA texture objects on
-the host, with the host passing those to the device via the SBT, and how to use
-those texture objects on the device. This one will take a bit of time
-to load in Debug - it's worth the wait! Or simply build and run in Release.
+![Example 8](./example08_addingTextures/example.08.png)
 
-![Adding Textures](./example08_addingTextures/ex08.png)
-
+<!--
 ## Example 9: Adding a second ray type: Shadows
 
 This is the last example that focuses on host-side setup, in this
