@@ -17,7 +17,7 @@
 #pragma once
 
 //#include "optix7.h"
-#include "gonzo.h"
+#include "softoptix.h"
 // common std stuff
 #include <vector>
 #include <assert.h>
