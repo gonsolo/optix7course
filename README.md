@@ -86,37 +86,24 @@ This is how it looks on my Linux machine:
 
 ![Example 8](./example08_addingTextures/example.08.png)
 
-<!--
 ## Example 9: Adding a second ray type: Shadows
 
-This is the last example that focuses on host-side setup, in this
-case adding a second ray type (for shadow rays), which also requires
-changing the way the SBT is being built. 
+TODO
 
-This sample also shows how to shoot secondary rays (the shadow rays)
-in device programs, how to use an any-hit program for the shadow rays,
-how to call *optixTerminateRay* from within an any-hit program, and how
-to use the optixTrace call's SBT index/offset values to specify the
-ray type.
-
+<!--
 ![Adding Shadow Rays](./example09_shadowRays/ex09.png)
+-->
 
 ## Example 10: Soft Shadows
 
-Whereas the first 9 examples focused on how to perform all the
-required host-side setup for various incremental features, this
-example can now start to focus more on the "ray tracing 101" style
-additions that focus what rays to trace to add certain rendering
-effects. 
+TODO
 
-This simple example intentionally only adds soft shadows from area
-lights, but extending this to add reflections, refraction, diffuse
-bounces, better material models/BRDFs, etc., should from now on be
-straightforward. 
-
-Please feel free to play with adding these examples ... and share what
-you did!
-
+<!--
 ![Soft Shadows](./example10_softShadows/ex10.png)
-
 -->
+
+## Example 11...
+
+I haven't yet written a denoiser so I didn't bother implementing these
+examples.
+
