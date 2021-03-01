@@ -1,12 +1,13 @@
 # A software implementation of Optix 7
 ## Based on: Siggraph 2019/2020 OptiX 7/7.1 Course Tutorial Code
-## Forked from from https://gitlab.com/ingowald/optix7course.git
 
 # About this repository  
 
 This repository implements Optix in Software. It was written to learn the Optix API.
 It mainly consists of parts of an pathtracer I wrote (https://github.com/gonsolo/gonzales)
 as rendering engine and glue code implementing the Optix API.
+
+This repository was forked from the original course at https://gitlab.com/ingowald/optix7course.git.
 
 # Building the Code
 
