@@ -18,7 +18,7 @@
 
 #include "gdt/math/vec.h"
 //#include "optix7.h"
-#include "gonzo.h"
+#include "softoptix.h"
 
 namespace osc {
   using namespace gdt;

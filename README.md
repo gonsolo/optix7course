@@ -66,31 +66,15 @@ This is how it looks on my Linux machine:
 
 ![Example 3](./example03_inGLFWindow/example.03.png)
 
-<!--
-
 ## Example 4: Creating a first Triangle Mesh and Accel Struct 
 
-Though the previous setup steps were important to get right, eventually 
-you want to use a ray tracer to trace some real rays against some
-real geometry. 
-
-This example introduces how to create some Triangle Mesh Geometry (in
-this example, two simple, hardcoded, cubes), how to build an
-Acceleration Structure over this "BuildInput", and how to trace rays
-against it. To do this we also need to introduce a simple camera model.
-
-![First Triangle Mesh and Accel Struct](./example04_firstTriangleMesh/ex04.png)
+![Example 4](./example04_firstTriangleMesh/example.04.png)
 
 ## Example 5: First Shader Binding Table (SBT) Data 
 
-The earlier examples *created* an SBT (they had to, else they couldn't
-have executed any OptiX launch), but didn't actually put any data into
-the SBT. This example introduces how to do that, by putting just some
-simple constant per-object color into the mesh's SBT entry, then shading
-it based on the surface normal's angle to the view ray.
+![Example 4](./example05_firstSBTData/example.05.png)
 
-![First SBT Data](./example05_firstSBTData/ex05.png)
-
+<!--
 ## Example 6: Multiple Triangle Meshes 
 
 This example introduces the concept of having multiple different

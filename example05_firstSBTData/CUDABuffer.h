@@ -18,7 +18,7 @@
 
 //#include "optix7.h"
 // common std stuff
-#include "gonzo.h"
+#include "softoptix.h"
 #include <vector>
 #include <assert.h>
 
