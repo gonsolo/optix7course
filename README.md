@@ -59,20 +59,6 @@ This is how it looks on my Linux machine:
 
 ## Example 2: First Pipeline Setup and Raygen Program
 
-This is the first "real" OptiX example, and maybe somewhat
-surprisingly, the biggest "step" in all the examples. 
-
-The actual raygen program that this example launches is actually
-very (!) small, and pretty much trivial; and there are no other programs,
-not even geometry, nor a single ray being traced ... but to launch
-this simple raygen program we nevertheless have to go through the
-entire process of creating Modules, Programs, and, in particular, a
-valid "Shader Binding Table" (SBT), before we can launch our little
-raygen sample.
-
-On the upside: Once this initial setup is done, everything will get
-*much* simpler in the following examples.
-
 ![Example 2](./example02_pipelineAndRayGen/example.02.png)
 
 <!--
