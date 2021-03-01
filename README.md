@@ -1,123 +1,49 @@
-# Siggraph 2019/2020 OptiX 7/7.1 Course Tutorial Code
+# A software implementation of Optix 7.
+## based on: Siggraph 2019/2020 OptiX 7/7.1 Course Tutorial Code
 
-## Latest Updates:
+# About this repository  
 
-* 10/21/2020: Bugfix: all moduleCompileOptions and
-  pipelineCompileOptions are now properly zero-initialized by default.
-  Otherwise, variables not set in these struct might have invalid values.
+This repository implements Optix in Software. It was written to learn the Optix API.
+It mainly consists of parts of an pathtracer I wrote (https://github.com/gonsolo/gonzales)
+as rendering engine and glue code implementing the Optix API.
 
-* 8/3/2020: Updated to also compile on OptiX 7.1
-
-* 1/3/2020: Several fixes and documentation adds to make project
-  compile with CentOS 7 (ie, oder gcc)
-
-* 1/1/2020: Changed all examples to enable full optimization level
-   and most appropriate pipeline config for the specific example (single GAS)
-   
-# About this Tutorial/Repository
-
-This tutorial was created to accompany the 2019 Siggraph course on
-"RTX Accelerated Ray Tracing with OptiX" 
-(slides available on
-https://drive.google.com/open?id=1_IYHwAZ4EoMcDmS0TknP-TZd7Cwmab_I ). 
-
-The aim of this repo is to serve as a "tutorial" in how to set
-up a full Scene - i.e., OptiX Context, Module, Programs, Pipeline,
-Shader Binding Table (SBT), Accel Struct (AS), Build Inputs, Texture
-Samplers, etc., in the newly introduced OptiX 7. 
-
-To do this, this repo intentionally does not provide *one* example
-that has the final code, but instead is split into 12 smaller
-examples, each of which modifies and extends the previous one,
-hopefully in a way that it is relatively easy to spot the differences
-(i.e., to spot what exactly had to be added to go from "A" to "B").
-
-Note this tutorial does (intentionally) not end in a
-overwhelming-wow-factor full-featured renderer - its aim is to *only*
-help you get *started* with OptiX 7, exactly up to the point where
-"Textbook Ray Tracing 101" would usually kick in.
-
-With that - enjoy!
-
-PS: I tried my best to make sure that code is correct, and will work
-out of the box in both Linux and Windows. However, I assume it's safe
-to expect that some one or other bug has crept in somewhere that I
-haven't found yet. If you do find one, please feel free to let me know
-via email or bug report, or send a push request, so others will be
-spared from finding it again. Any other feedback is welcome, too!
-
+The code was forked from https://gitlab.com/ingowald/optix7course.git.
 
 # Building the Code
 
-This code was intentionally written with minimal dependencies,
-requiring only CMake (as a build system), your favorite
-compiler (tested with Visual Studio 2017 and 2019 under Windows, and GCC under
-Linux), and the OptiX 7 SDK (including CUDA 10.1 and NVIDIA driver recent
-enough to support OptiX).
+"make" builds everything. Then go to an example and type "make run".
+I only tested it on Linux.
 
 ## Dependencies
 
-- a compiler
-    - On Windows, tested with Visual Studio 2017 and 2019 community editions
-    - On Linux, tested with Ubuntu 18 and Ubuntu 19 default gcc installs
-- CUDA 10.1
-    - Download from developer.nvidia.com
-    - on Linux, suggest to put `/usr/local/cuda/bin` into your `PATH`
-- latest NVIDIA developer driver that comes with the SDK
-    - download from http://developer.nvidia.com/optix and click "Get OptiX"
-- OptiX 7 SDK
-    - download from http://developer.nvidia.com/optix and click "Get OptiX"
-    - on linux, suggest to set the environment variable `OptiX_INSTALL_DIR` to wherever you installed the SDK.  
-    `export OptiX_INSTALL_DIR=<wherever you installed OptiX 7 SDK>`
-    - on windows, the installer should automatically put it into the right directory
-
-The only *external* library we use is GLFW for windowing, and
-even this one we build on the fly under Windows, so installing
-it is required only under Linux. 
-
-Detailed steps below:
+- a C++ compiler (gcc 10.2)
+- a Swift compiler (swiftc 5.3.3).
+- no Optix SDK, Cuda or Nvidia drivers are needed. ;)
+- GLFW
 
 ## Building under Linux
 
 - Install required packages
 
-    - on Debian/Ubuntu: `sudo apt install libglfw3-dev cmake-curses-gui`
-    - on RedHat/CentOS/Fedora (tested CentOS 7.7): `sudo yum install cmake3 glfw-devel freeglut-devel`
+    - on Ubuntu: `sudo apt install libglfw3-dev`
 
 - Clone the code
 ```
-    git clone https://gitlab.com/ingowald/optix7course.git
+    git clone https://github.com/gonsolo/optix7course
     cd optix7course
 ```
 
-- create (and enter) a build directory
-```
-    mkdir build
-    cd build
-```
-
-- configure with cmake
-    - Ubuntu: `cmake ..`
-    - CentOS 7: `cmake3 ..`
-
-- and build
+- build
 ```
     make
 ```
 
-## Building under Windows
+- run an example
+```
+    cd example01_helloOptix; make run
+```
 
-- Install Required Packages
-	- see above: CUDA 10.1, OptiX 7 SDK, latest driver, and cmake
-- download or clone the source repository
-- Open `CMake GUI` from your start menu
-	- point "source directory" to the downloaded source directory
-	- point "build directory" to <source directory>/build (agree to create this directory when prompted)
-	- click 'configure', then specify the generator as Visual Studio 2017 or 2019, and the Optional platform as x64. If CUDA, SDK, and compiler are all properly installed this should enable the 'generate' button. If not, make sure all dependencies are properly installed, "clear cache", and re-configure.
-	- click 'generate' (this creates a Visual Studio project and solutions)
-	- click 'open project' (this should open the project in Visual Studio)
-
-
+<!--
 # Examples Overview
 	
 ## Example 1: Hello World 
@@ -258,80 +184,4 @@ you did!
 
 ![Soft Shadows](./example10_softShadows/ex10.png)
 
-
-## Example 11: Simple Denoising (LDR, color only)
-
-This example takes the code from the previous example and simply runs
-the optix denoiser on the final frame (ie, color) buffer computed by
-this optix launch. It does not store any albedo or normal buffers, 
-not compute HDR intensity, etc. 
-
-To fully see the impact of denoising *without* progressive resampling,
-feel free to turn denoising and/or progressive refinemnt on and off
-via the 'd' (denoising) and 'a' (accumulate) keys.
-
-Example 11, single sample per pixel, *no* denoising:
-![Ex11, 1spp, noisy](./example11_denoiseColorOnly/ex11_noisy.png)
-
-The same, with denoiser turned on:
-![Ex11, 1spp, denoised](./example11_denoiseColorOnly/ex11_denoised.png)
-
-
-
-## Example 12: Denoising with HDR and separate Normal Channel
-
-This example improves on the simple denoising by computing
-a separate normal buffer (which improves the denoiser quality), and
-by doing denoising in HDR, with an added gamma pass *after* denoising.
-
-As with example 11, to fully see the impact of denoising *without*
-progressive resampling, feel free to turn denoising and/or progressive
-refinemnt on and off via the 'd' (denoising) and 'a' (accumulate)
-keys.
-
-Example 12, single sample per pixel, *no* denoising:
-![Ex12, 1spp, noisy](./example12_denoiseSeparateChannels/ex12_noisy.png)
-
-The same, with denoiser turned on:
-![Ex12, 1spp, denoised](./example12_denoiseSeparateChannels/ex12_denoised.png)
-
-
-
-
-
-
-
-
-
-## Example 13: It's up to you ...
-
-From here on, there are multiple different avenues of how to add to
-this simple viewer, in terms of visual features, performance, kind
-and complexity of geometry, etc. In no particular order, and just
-to serve as inspiration:
-
-- Performance
-   - Multi-GPU
-   - Denoising
-   - Better random numbers, better sampling, importance sampling, ...
-   - ...
-- Shading Effects
-   - More/better light sources (eventually with importance sampling for multiple lights!)
-   - Better camera model, with depth of field 
-   - Alpha/Transparency Textures for Cut-outs (Tip: often used in landscape scenes)
-   - Better material model / BRDF
-   - Indirect Illumination / path tracing
-   - ...
-- Geometry-related Capabilities
-   - Instancing, possibly multi-level instancing
-   - Animation
-   - Motion Blur
-   - ...
-- Viewer/app extensions
-   - Camera motion based on user input
-   - More importers (PBRT parser?)
-   - Picking and editing
-   - ...
-
-Whichever of these - or other - features you might want to play around with: Let me know how it works out ... and have fun doing it!
-
+-->
