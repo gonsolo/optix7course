@@ -1,4 +1,2 @@
-libGonzales.so
+libSoftOptix.a
 /*.o
-gonzo.so
-libGonzo.a
