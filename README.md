@@ -88,22 +88,9 @@ This is how it looks on my Linux machine:
 
 ## Example 9: Adding a second ray type: Shadows
 
-TODO
-
-<!--
-![Adding Shadow Rays](./example09_shadowRays/ex09.png)
--->
+![Example 9](./example09_shadowRays/example.09.png)
 
 ## Example 10: Soft Shadows
 
-TODO
-
-<!--
-![Soft Shadows](./example10_softShadows/ex10.png)
--->
-
-## Example 11...
-
-I haven't yet written a denoiser so I didn't bother implementing these
-examples.
+![Example 10](./example10_softShadows/example.10.png)
 
