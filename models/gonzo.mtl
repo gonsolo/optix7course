@@ -14,3 +14,19 @@ newmtl leaf
 	map_d textures\sponza_thorn_mask.png
 	map_bump textures\sponza_thorn_bump.png
 
+newmtl shmeaf
+	Ns 10.0000
+	Ni 1.5000
+	d 1.0000
+	Tr 0.0000
+	Tf 1.0000 1.0000 1.0000 
+	illum 2
+	Ka 1 1 1
+	Kd 1 1 1
+	Ks 0.0000 0.0000 0.0000
+	Ke 0.0000 0.0000 0.0000
+	map_Ka textures\shmeaf.png
+	map_Kd textures\shmeaf.png
+	map_d textures\sponza_thorn_mask.png
+	map_bump textures\sponza_thorn_bump.png
+

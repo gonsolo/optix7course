@@ -584,6 +584,9 @@ namespace osc {
         }
         rec.data.index    = (vec3i*)indexBuffer[meshID].d_pointer();
         rec.data.vertex   = (vec3f*)vertexBuffer[meshID].d_pointer();
+
+        //std::cout << "address of vertex buffer: " << (vec3f*)vertexBuffer[meshID].d_pointer() << std::endl;
+
         rec.data.normal   = (vec3f*)normalBuffer[meshID].d_pointer();
         rec.data.texcoord = (vec2f*)texcoordBuffer[meshID].d_pointer();
         hitgroupRecords.push_back(rec);

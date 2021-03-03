@@ -30,7 +30,7 @@ func addTriangles(
                         faceIndices: [])
                 triangles.append(contentsOf: mesh)
         } catch {
-                print("Error accelBuild!")
+                print("Error addTriangles!")
         }
 }
 

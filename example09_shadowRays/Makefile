@@ -6,7 +6,7 @@ all: run
 $(TARGET): main.cpp SampleRenderer.cpp Model.cpp ../common/glfWindow/GLFWindow.cpp
 	g++ -O2 -g -rdynamic -I../common -I../softoptix -I../common/gdt -o $@ $^ ../softoptix/libSoftOptix.a -ldl -lglfw -lOpenGL $(SWIFT_LIBS)
 run: $(TARGET)
-	LD_LIBRARY_PATH=$(SWIFT_PATH)/linux:../softoptix ./$(TARGET)
+	LD_LIBRARY_PATH=$(SWIFT_PATH)/linux ./$(TARGET)
 c: clean
 clean:
 	rm -f $(TARGET) devicePrograms.bc devicePrograms.o
@@ -16,6 +16,6 @@ devicePrograms.o: devicePrograms.bc
 devicePrograms.bc: devicePrograms.cu
 	clang++ -O2 -emit-llvm -xc++ -std=c++17 -I../softoptix -I ../common/gdt -c devicePrograms.cu
 gdb:
-	LD_LIBRARY_PATH=$(SWIFT_PATH)/linux:../softoptix gdb ./$(TARGET)
+	LD_LIBRARY_PATH=$(SWIFT_PATH)/linux gdb ./$(TARGET)
 perf:
-	LD_LIBRARY_PATH=$(SWIFT_PATH)/linux:../softoptix perf record ./$(TARGET)
+	LD_LIBRARY_PATH=$(SWIFT_PATH)/linux perf record ./$(TARGET)
