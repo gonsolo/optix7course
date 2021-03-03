@@ -328,7 +328,11 @@ CUdeviceptr optixGetSbtDataPointer() {
         uint8_t* base = (uint8_t*)shaderBindingTable->hitgroupRecordBase;
         auto stride = shaderBindingTable->hitgroupRecordStrideInBytes;
         auto count = shaderBindingTable->hitgroupRecordCount;
-        CUdeviceptr data = base + 2 * numInput * stride + OPTIX_SBT_RECORD_HEADER_SIZE; 
+
+        // Hack for example 9 and 10
+        auto mul = count == 786 ? 2 : 1;
+
+        CUdeviceptr data = base + mul * numInput * stride + OPTIX_SBT_RECORD_HEADER_SIZE; 
         return data; 
 }
 

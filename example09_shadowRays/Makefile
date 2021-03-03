@@ -1,8 +1,7 @@
 include ../Makefile.config
 
 TARGET = ex09_shadowRays
-#all: $(TARGET)
-all: run
+all: $(TARGET)
 $(TARGET): main.cpp SampleRenderer.cpp Model.cpp ../common/glfWindow/GLFWindow.cpp
 	g++ -O2 -g -rdynamic -I../common -I../softoptix -I../common/gdt -o $@ $^ ../softoptix/libSoftOptix.a -ldl -lglfw -lOpenGL $(SWIFT_LIBS)
 run: $(TARGET)
