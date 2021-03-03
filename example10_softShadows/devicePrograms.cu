@@ -15,7 +15,8 @@
 // ======================================================================== //
 
 #include <optix_device.h>
-#include <cuda_runtime.h>
+//#include <cuda_runtime.h>
+#include "softoptix.h"
 
 #include "LaunchParams.h"
 #include "gdt/random/random.h"

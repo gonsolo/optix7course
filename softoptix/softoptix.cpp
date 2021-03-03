@@ -326,23 +326,9 @@ unsigned int optixGetPayload_1() {
 
 CUdeviceptr optixGetSbtDataPointer() {
         uint8_t* base = (uint8_t*)shaderBindingTable->hitgroupRecordBase;
-        //std::cout << "address of sbt base pointer: " << (void*)base << std::endl;
         auto stride = shaderBindingTable->hitgroupRecordStrideInBytes;
         auto count = shaderBindingTable->hitgroupRecordCount;
-        //CUdeviceptr data = base + OPTIX_SBT_RECORD_HEADER_SIZE; // works
-
-        //CUdeviceptr data = base + count * numInput * stride + OPTIX_SBT_RECORD_HEADER_SIZE; 
         CUdeviceptr data = base + 2 * numInput * stride + OPTIX_SBT_RECORD_HEADER_SIZE; 
-
-        std::cout << "numInput: " << numInput << std::endl;
-        std::cout << "stride: " << stride << std::endl;
-        std::cout << "data: " << data << std::endl;
-        std::cout << "count: " << count << std::endl;
-
-        //CUdeviceptr bla = base + OPTIX_SBT_RECORD_HEADER_SIZE; 
-        //return bla;
-        //std::cout << "address of sbt base pointer: " << (void*)base << std::endl;
-        //std::cout << "address of sbt data pointer: " << data << std::endl;
         return data; 
 }
 
