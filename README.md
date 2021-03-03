@@ -8,8 +8,8 @@ Based on: Siggraph 2019/2020 OptiX 7/7.1 Course Tutorial Code
 This repository implements Optix in Software. It was written to learn the Optix API.
 It mainly consists of parts of an pathtracer I wrote (https://github.com/gonsolo/gonzales)
 as rendering engine and glue code implementing the Optix API.
-The API was implemented step by step, starting with example 01 and progressively extended
-as can be seen in the history.
+The API was implemented step by step, starting with example 01 and progressively extending
+it as can be seen in the history.
 
 This repository was forked from the original course at https://gitlab.com/ingowald/optix7course.git.
 
