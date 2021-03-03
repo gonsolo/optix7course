@@ -95,7 +95,7 @@ namespace osc {
          +       u * sbtData.normal[index.y]
          +       v * sbtData.normal[index.z])
       : Ng;
-    
+
     // ------------------------------------------------------------------
     // face-forward and normalize normals
     // ------------------------------------------------------------------
@@ -139,6 +139,7 @@ namespace osc {
     // the values we store the PRD pointer in:
     uint32_t u0, u1;
     packPointer( &lightVisibility, u0, u1 );
+#if 1 
     optixTrace(optixLaunchParams.traversable,
                surfPos + 1e-3f * Ng,
                lightDir,
@@ -156,6 +157,12 @@ namespace osc {
                RAY_TYPE_COUNT,               // SBT stride
                SHADOW_RAY_TYPE,            // missSBTIndex 
                u0, u1 );
+#endif
+    // gonzo
+    vec3f &prd = *(vec3f*)getPRD<vec3f>();
+    prd = diffuseColor;
+    // gonzo
+#if 0
 
     // ------------------------------------------------------------------
     // final shading: a bit of ambient, a bit of directional ambient,
@@ -167,6 +174,7 @@ namespace osc {
     
     vec3f &prd = *(vec3f*)getPRD<vec3f>();
     prd = (.1f + (.2f + .8f*lightVisibility) * cosDN) * diffuseColor;
+#endif
   }
   
   extern "C" __global__ void __anyhit__radiance()
@@ -228,7 +236,6 @@ namespace osc {
                              + (screen.x - 0.5f) * camera.horizontal
                              + (screen.y - 0.5f) * camera.vertical);
 
-    //std::cout << "calling optixTrace from renderFrame" << std::endl;
     optixTrace(optixLaunchParams.traversable,
                camera.position,
                rayDir,
@@ -241,7 +248,6 @@ namespace osc {
                RAY_TYPE_COUNT,               // SBT stride
                RADIANCE_RAY_TYPE,            // missSBTIndex 
                u0, u1 );
-
     const int r = int(255.99f*pixelColorPRD.x);
     const int g = int(255.99f*pixelColorPRD.y);
     const int b = int(255.99f*pixelColorPRD.z);

@@ -242,6 +242,8 @@ static void *unpackPointer(uint32_t i0, uint32_t i1) {
 
 int counter = 0;
 int primitiveIndex = 0;
+unsigned int old_payload0 = 0;
+unsigned int old_payload1 = 0;
 unsigned int payload0 = 0;
 unsigned int payload1 = 0;
 float rayDirX;
@@ -280,17 +282,22 @@ void optixTrace(
               &numInput,
               &ux, &uy);
 
+        old_payload0 = payload0;
+        old_payload1 = payload1;
         payload0 = p0;
         payload1 = p1;
 
+        bool disable_closesthit = rayFlags & OPTIX_RAY_FLAG_DISABLE_CLOSESTHIT;
         if (result == -1) {
-                miss_radiance();
+                if (!disable_closesthit)
+                        miss_radiance();
         } else {
                 primitiveIndex = result;
-                bool disable_closesthit = rayFlags & OPTIX_RAY_FLAG_DISABLE_CLOSESTHIT;
                 if (!disable_closesthit)
                         closest();
         }
+        payload0 = old_payload0;
+        payload1 = old_payload1;
 }
 
 unsigned int optixGetPrimitiveIndex() {
